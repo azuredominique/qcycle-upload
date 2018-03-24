@@ -1,3 +1,8 @@
+[![Build Status](https://travis-ci.org/OpenHumans/oh-23andme-source.svg?branch=master)](https://travis-ci.org/OpenHumans/oh-23andme-source)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/a21c2545bf9356bf1277/test_coverage)](https://codeclimate.com/github/OpenHumans/oh-23andme-source/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/a21c2545bf9356bf1277/maintainability)](https://codeclimate.com/github/OpenHumans/oh-23andme-source/maintainability)
+
+
 # The *23andMe* upload project for *Open Humans*
 
 **WORK IN PROGRESS**
@@ -8,4 +13,4 @@ This is a Django project that is based on the [Open Humans Data Uploader](https:
 
 This task grabs the newly uploaded file from *Open Humans* and performs the file format verifications to test that it's a proper *23andMe* file. Invalid rows from the file are being deleted to ensure the privacy of participants. If the uploaded file is completely broken the file will be deleted and the user is getting a message notifying them about the problem.
 
-The integration of the *VCF* conversion is yet to be done. 
+The integration of the *VCF* conversion is yet to be done.
