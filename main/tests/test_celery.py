@@ -2,7 +2,9 @@ from django.test import TestCase, RequestFactory
 from django.conf import settings
 from django.core.management import call_command
 from open_humans.models import OpenHumansMember
+from datetime import date
 from main.celery import read_reference
+from main.celery_helper import vcf_header
 import os
 
 
@@ -36,3 +38,21 @@ class ParsingTestCase(TestCase):
                                         'fixtures/test_reference.txt')
         ref = read_reference(REF_23ANDME_FILE)
         self.assertEqual(ref, {'1': {'82154': 'A', '752566': 'G'}})
+
+    def test_vcf_header(self):
+        """
+        Test function to create a VCF header
+        """
+        hd = vcf_header(
+            source='23andme',
+            reference='http://example.com',
+            format_info=['<ID=GT,Number=1,Type=String,Description="GT">'])
+        self.assertEqual(len(hd), 6)
+        expected_header_fields = ["##fileformat",
+                                  "##fileDate",
+                                  '##source',
+                                  '##reference',
+                                  '##FORMAT',
+                                  '#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER' +
+                                  '\tINFO\tFORMAT\t23ANDME_DATA']
+        self.assertEqual([i.split("=")[0] for i in hd], expected_header_fields)
