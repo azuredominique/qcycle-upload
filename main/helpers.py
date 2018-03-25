@@ -63,6 +63,10 @@ def oh_code_to_member(code):
         return None
 
 
+VCF_FIELDS = ['CHROM', 'POS', 'ID', 'REF', 'ALT', 'QUAL', 'FILTER',
+              'INFO', 'FORMAT', '23ANDME_DATA']
+
+
 def vcf_header(source=None, reference=None, format_info=None):
     """
     Generate a VCF header.

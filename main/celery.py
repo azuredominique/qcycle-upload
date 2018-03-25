@@ -34,9 +34,6 @@ REF_23ANDME_FILE = os.path.join(os.path.dirname(__file__),
 REFERENCE_GENOME_URL = ('http://hgdownload-test.cse.ucsc.edu/' +
                         'goldenPath/hg19/bigZips/hg19.2bit')
 
-VCF_FIELDS = ['CHROM', 'POS', 'ID', 'REF', 'ALT', 'QUAL', 'FILTER',
-              'INFO', 'FORMAT', '23ANDME_DATA']
-
 logger = logging.getLogger(__name__)
 
 app = Celery('proj')
