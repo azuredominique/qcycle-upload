@@ -7,6 +7,7 @@ import zipfile
 import bz2
 import gzip
 import os
+from datetime import date
 
 logger = logging.getLogger(__name__)
 OH_OAUTH2_REDIRECT_URI = '{}/complete'.format(settings.OPENHUMANS_APP_BASE_URL)
