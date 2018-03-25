@@ -1,7 +1,6 @@
 import os
 from celery import Celery
 import tempfile
-import gzip
 import json
 from ohapi import api
 import requests
@@ -10,12 +9,13 @@ import bz2
 import logging
 import re
 import shutil
-import zipfile
 
 from io import StringIO
-from datetime import date, datetime
+from datetime import datetime
 
 import arrow
+
+from .helpers import vcf_header, temp_join, open_archive
 
 from django.conf import settings
 
@@ -52,32 +52,6 @@ app.conf.update(CELERY_BROKER_URL=os.environ['REDIS_URL'],
 # Load task modules from all registered Django app configs.
 app.autodiscover_tasks()
 # app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
-
-
-def vcf_header(source=None, reference=None, format_info=None):
-    """
-    Generate a VCF header.
-    """
-    header = []
-    today = date.today()
-
-    header.append('##fileformat=VCFv4.1')
-    header.append('##fileDate=%s%s%s' % (str(today.year),
-                                         str(today.month).zfill(2),
-                                         str(today.day).zfill(2)))
-
-    if source:
-        header.append('##source=' + source)
-
-    if reference:
-        header.append('##reference=%s' % reference)
-
-    for item in format_info:
-        header.append('##FORMAT=' + item)
-
-    header.append('#' + '\t'.join(VCF_FIELDS))
-
-    return header
 
 
 def vcf_from_raw_23andme(raw_23andme):
@@ -230,39 +204,6 @@ def clean_raw_23andme(closed_input_file):
         logger.warn('23andMe body did not conform to expected format.')
 
     return output
-
-
-def filter_archive(zip_file):
-    return [f for f in zip_file.namelist()
-            if not f.startswith('__MACOSX/')]
-
-
-def open_archive(input_file):
-    error_message = ("Input file is expected to be either '.txt', "
-                     "'.txt.gz', '.txt.bz2', or a single '.txt' file in a "
-                     "'.zip' ZIP archive.")
-    if input_file.name.endswith('.zip'):
-        zip_file = zipfile.ZipFile(input_file)
-        zip_files = filter_archive(zip_file)
-
-        if len(zip_files) != 1:
-            logger.warn(error_message)
-            raise ValueError(error_message)
-
-        return zip_file.open(zip_files[0])
-    elif input_file.name.endswith('.txt.gz'):
-        return gzip.open(input_file.name)
-    elif input_file.name.endswith('.txt.bz2'):
-        return bz2.BZ2File(input_file.name)
-    elif input_file.name.endswith('.txt'):
-        return open(input_file.name)
-
-    logger.warn(error_message)
-    raise ValueError(error_message)
-
-
-def temp_join(tmp_directory, path):
-    return os.path.join(tmp_directory, path)
 
 
 def upload_new_file(cleaned_file,
