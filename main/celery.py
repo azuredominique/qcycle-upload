@@ -18,7 +18,7 @@ import arrow
 
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'oh_data_uploader.settings')
-from .helpers import vcf_header, temp_join, open_archive
+from .celery_helper import vcf_header, temp_join, open_archive
 
 OH_BASE_URL = settings.OPENHUMANS_OH_BASE_URL
 OH_API_BASE = OH_BASE_URL + '/api/direct-sharing'
