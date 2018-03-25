@@ -2,7 +2,6 @@ from django.test import TestCase, RequestFactory
 from django.conf import settings
 from django.core.management import call_command
 from open_humans.models import OpenHumansMember
-from datetime import date
 from main.celery import read_reference
 from main.celery_helper import vcf_header
 import os
