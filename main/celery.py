@@ -275,14 +275,11 @@ def upload_new_file(cleaned_file,
                          data={'project_member_id': project_member_id,
                                'filename': cleaned_file.name,
                                'metadata': json.dumps(metadata)})
-    print(req1)
-    print(req1.json())
     if req1.status_code != 201:
         raise Exception('Bad response when starting file upload.')
     # Upload to S3 target.
     req2 = requests.put(url=req1.json()['url'], data=cleaned_file)
     if req2.status_code != 200:
-        logger.warn(req2)
         raise Exception('Bad response when uploading file.')
 
     # Report completed upload to Open Humans.
@@ -337,7 +334,6 @@ def process_file(dfile, access_token, member, metadata):
         'tags': ['23andMe', 'genotyping', 'vcf'],
         'creation_date': arrow.get().format()
     }
-    print(temp_join(tmp_directory, vcf_filename))
     with bz2.BZ2File(temp_join(tmp_directory,
                                vcf_filename), 'w') as vcf_file:
         vcf_23andme.seek(0)
@@ -346,7 +342,6 @@ def process_file(dfile, access_token, member, metadata):
 
     with open(temp_join(tmp_directory,
                         vcf_filename), 'r+b') as vcf_file:
-
         upload_new_file(vcf_file,
                         access_token,
                         str(member['project_member_id']),
@@ -358,6 +353,5 @@ def clean_uploaded_file(self, access_token, file_id):
     member = api.exchange_oauth2_member(access_token)
     for dfile in member['data']:
         if dfile['id'] == file_id:
-            print(dfile)
             process_file(dfile, access_token, member, dfile['metadata'])
     pass
