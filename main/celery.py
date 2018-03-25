@@ -52,10 +52,10 @@ app.autodiscover_tasks()
 # app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
 
-def read_reference():
+def read_reference(ref_file):
     reference = dict()
 
-    with open(REF_23ANDME_FILE) as f:
+    with open(ref_file) as f:
         for line in f:
             data = line.rstrip().split('\t')
 
@@ -69,7 +69,7 @@ def read_reference():
 def vcf_from_raw_23andme(raw_23andme):
     output = StringIO()
 
-    reference = read_reference()
+    reference = read_reference(REF_23ANDME_FILE)
 
     header = vcf_header(
         source='open_humans_data_importer.twenty_three_and_me',
