@@ -5,7 +5,18 @@ import gzip
 import json
 from ohapi import api
 import requests
-# from .views import raise_http_error
+
+import bz2
+import logging
+import re
+import shutil
+import zipfile
+
+from io import StringIO
+from datetime import date, datetime
+
+import arrow
+
 from django.conf import settings
 
 # set the default Django settings module for the 'celery' program.
@@ -16,6 +27,17 @@ OH_API_BASE = OH_BASE_URL + '/api/direct-sharing'
 OH_DIRECT_UPLOAD = OH_API_BASE + '/project/files/upload/direct/'
 OH_DIRECT_UPLOAD_COMPLETE = OH_API_BASE + '/project/files/upload/complete/'
 
+REF_23ANDME_FILE = os.path.join(os.path.dirname(__file__),
+                                'references/reference_b37.txt')
+
+# Was used to generate reference genotypes in the previous file.
+REFERENCE_GENOME_URL = ('http://hgdownload-test.cse.ucsc.edu/' +
+                        'goldenPath/hg19/bigZips/hg19.2bit')
+
+VCF_FIELDS = ['CHROM', 'POS', 'ID', 'REF', 'ALT', 'QUAL', 'FILTER',
+              'INFO', 'FORMAT', '23ANDME_DATA']
+
+logger = logging.getLogger(__name__)
 
 app = Celery('proj')
 
@@ -32,34 +54,215 @@ app.autodiscover_tasks()
 # app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
 
-def check_integer(string):
-    try:
-        int(string.replace('"', ''))
-        return True
-    except ValueError:
-        return False
+def vcf_header(source=None, reference=None, format_info=None):
+    """
+    Generate a VCF header.
+    """
+    header = []
+    today = date.today()
+
+    header.append('##fileformat=VCFv4.1')
+    header.append('##fileDate=%s%s%s' % (str(today.year),
+                                         str(today.month).zfill(2),
+                                         str(today.day).zfill(2)))
+
+    if source:
+        header.append('##source=' + source)
+
+    if reference:
+        header.append('##reference=%s' % reference)
+
+    for item in format_info:
+        header.append('##FORMAT=' + item)
+
+    header.append('#' + '\t'.join(VCF_FIELDS))
+
+    return header
 
 
-def check_chromosome(string):
-    string = string.replace('"', '')
-    if string in ['X', 'Y', 'MT', 'M'] or \
-       check_integer(string):
-        return True
+def vcf_from_raw_23andme(raw_23andme):
+    output = StringIO()
+    reference = dict()
+
+    with open(REF_23ANDME_FILE) as f:
+        for line in f:
+            data = line.rstrip().split('\t')
+
+            if data[0] not in reference:
+                reference[data[0]] = dict()
+
+            reference[data[0]][data[1]] = data[2]
+
+    header = vcf_header(
+        source='open_humans_data_importer.twenty_three_and_me',
+        reference=REFERENCE_GENOME_URL,
+        format_info=['<ID=GT,Number=1,Type=String,Description="Genotype">'])
+
+    for line in header:
+        output.write(line + '\n')
+
+    for line in raw_23andme:
+        # Skip header
+        if line.startswith('#'):
+            continue
+
+        data = line.rstrip().split('\t')
+
+        # Skip uncalled and genotyping without explicit base calls
+        if not re.match(r'^[ACGT]{1,2}$', data[3]):
+            continue
+        vcf_data = {x: '.' for x in VCF_FIELDS}
+
+        # Chromosome, position, dbSNP ID, reference. Skip if we don't have ref.
+        try:
+            vcf_data['REF'] = reference[data[1]][data[2]]
+        except KeyError:
+            continue
+
+        if data[1] == 'MT':
+            vcf_data['CHROM'] = 'M'
+        else:
+            vcf_data['CHROM'] = data[1]
+
+        vcf_data['POS'] = data[2]
+
+        if data[0].startswith('rs'):
+            vcf_data['ID'] = data[0]
+
+        # Figure out the alternate alleles.
+        alt_alleles = []
+
+        for alle in data[3]:
+            if alle != vcf_data['REF'] and alle not in alt_alleles:
+                alt_alleles.append(alle)
+
+        if alt_alleles:
+            vcf_data['ALT'] = ','.join(alt_alleles)
+        else:
+            vcf_data['ALT'] = '.'
+            vcf_data['INFO'] = 'END=' + vcf_data['POS']
+
+        # Get allele-indexed genotype.
+        vcf_data['FORMAT'] = 'GT'
+        all_alleles = [vcf_data['REF']] + alt_alleles
+        genotype_indexed = '/'.join([str(all_alleles.index(x))
+                                     for x in data[3]])
+        vcf_data['23ANDME_DATA'] = genotype_indexed
+        output_line = '\t'.join([vcf_data[x] for x in VCF_FIELDS])
+        output.write(output_line + '\n')
+
+    return output
+
+
+def clean_raw_23andme(closed_input_file):
+    input_file = open_archive(closed_input_file)
+
+    output = StringIO()
+
+    dateline = input_file.readline()
+
+    re_datetime_string = (r'([A-Z][a-z]{2} [A-Z][a-z]{2} [ 1-9][0-9] '
+                          r'[0-9][0-9]:[0-9][0-9]:[0-9][0-9] 2[0-9]{3})')
+
+    if re.search(re_datetime_string, dateline):
+        datetime_string = re.search(re_datetime_string,
+                                    dateline).groups()[0]
+
+        re_norm_day = r'(?<=[a-z])  ([1-9])(?= [0-9][0-9]:[0-9][0-9])'
+
+        datetime_norm = re.sub(re_norm_day, r' 0\1', datetime_string)
+        datetime_23andme = datetime.strptime(datetime_norm,
+                                             '%a %b %d %H:%M:%S %Y')
+
+        output.write('# This data file generated by 23andMe at: {}\r\n'
+                     .format(datetime_23andme.strftime(
+                         '%a %b %d %H:%M:%S %Y')))
+
+    cwd = os.path.dirname(__file__)
+
+    header_v1 = open(os.path.join(cwd, 'references/header-v1.txt'), 'r').read()
+    header_v2 = open(os.path.join(cwd, 'references/header-v2.txt'), 'r').read()
+    header_v3_p1 = open(os.path.join(cwd,
+                                     'references/header-v3-p1.txt'),
+                        'r').read()
+    header_v3_p2 = open(os.path.join(cwd,
+                                     'references/header-v3-p2.txt'),
+                        'r').read()
+
+    header_lines = ''
+
+    next_line = input_file.readline()
+
+    while next_line.startswith('#'):
+        header_lines += next_line
+
+        next_line = input_file.readline()
+
+    if (header_lines.splitlines() == header_v1.splitlines() or
+            header_lines.splitlines() == header_v2.splitlines()):
+        output.write(header_lines)
+    elif (header_lines.splitlines()[:13] == header_v3_p1.splitlines() and
+          header_lines.splitlines()[-5:] == header_v3_p2.splitlines()):
+        output.write(header_v3_p1)
+        output.write('# [URL REDACTED]\n')
+        output.write(header_v3_p2)
     else:
-        return False
+        logger.warn('23andMe header did not conform to expected format.')
+
+    bad_format = False
+
+    while next_line:
+        if re.match(r'(rs|i)[0-9]+\t[1-9XYM][0-9T]?\t[0-9]+\t[ACGT\-ID][ACGT\-ID]?', next_line):
+            output.write(next_line)
+        else:
+            # Only report this type of format issue once.
+            if not bad_format:
+                bad_format = True
+                logger.warn('23andMe body did not conform to expected format.')
+                logger.warn('Bad format: "%s"', next_line)
+
+        try:
+            next_line = input_file.readline()
+        except StopIteration:
+            next_line = None
+
+    if bad_format:
+        logger.warn('23andMe body did not conform to expected format.')
+
+    return output
 
 
-def valid_line(line):
-    lsplit = line.rstrip().split(",")
-    if check_integer(lsplit[1]) and \
-       check_integer(lsplit[2]) and \
-       lsplit[0].startswith('"rs') and \
-       len(lsplit) == 4:
-        return True
-    elif line.rstrip() == 'RSID,CHROMOSOME,POSITION,RESULT':
-        return True
-    else:
-        return False
+def filter_archive(zip_file):
+    return [f for f in zip_file.namelist()
+            if not f.startswith('__MACOSX/')]
+
+
+def open_archive(input_file):
+    error_message = ("Input file is expected to be either '.txt', "
+                     "'.txt.gz', '.txt.bz2', or a single '.txt' file in a "
+                     "'.zip' ZIP archive.")
+    if input_file.name.endswith('.zip'):
+        zip_file = zipfile.ZipFile(input_file)
+        zip_files = filter_archive(zip_file)
+
+        if len(zip_files) != 1:
+            logger.warn(error_message)
+            raise ValueError(error_message)
+
+        return zip_file.open(zip_files[0])
+    elif input_file.name.endswith('.txt.gz'):
+        return gzip.open(input_file.name)
+    elif input_file.name.endswith('.txt.bz2'):
+        return bz2.BZ2File(input_file.name)
+    elif input_file.name.endswith('.txt'):
+        return open(input_file.name)
+
+    logger.warn(error_message)
+    raise ValueError(error_message)
+
+
+def temp_join(tmp_directory, path):
+    return os.path.join(tmp_directory, path)
 
 
 def upload_new_file(cleaned_file,
@@ -72,12 +275,14 @@ def upload_new_file(cleaned_file,
                          data={'project_member_id': project_member_id,
                                'filename': cleaned_file.name,
                                'metadata': json.dumps(metadata)})
+    print(req1)
+    print(req1.json())
     if req1.status_code != 201:
         raise Exception('Bad response when starting file upload.')
-
     # Upload to S3 target.
     req2 = requests.put(url=req1.json()['url'], data=cleaned_file)
     if req2.status_code != 200:
+        logger.warn(req2)
         raise Exception('Bad response when uploading file.')
 
     # Report completed upload to Open Humans.
@@ -90,52 +295,62 @@ def upload_new_file(cleaned_file,
         raise Exception('Bad response when completing file upload.')
 
 
-@app.task(bind=True)
-def debug_task(self):
-    print('Request: {0!r}'.format(self.request))
+def process_file(dfile, access_token, member, metadata):
+    infile_suffix = dfile['basename'].split(".")[-1]
+    tf_in = tempfile.NamedTemporaryFile(suffix="."+infile_suffix)
+    tf_in.write(requests.get(dfile['download_url']).content)
+    tf_in.flush()
+    tmp_directory = tempfile.mkdtemp()
+    filename_base = '23andMe-genotyping'
 
+    raw_23andme = clean_raw_23andme(tf_in)
+    raw_23andme.seek(0)
+    vcf_23andme = vcf_from_raw_23andme(raw_23andme)
 
-def process_target(data_file, access_token, member, metadata):
-    try:
-        tf = tempfile.NamedTemporaryFile(suffix=".gz")
-        tf_out = tempfile.NamedTemporaryFile(prefix="ftdna-",
-                                             suffix=".csv",
-                                             mode="w+b")
-        print("downloading ftdna file from oh")
-        tf.write(requests.get(data_file['download_url']).content)
-        tf.flush()
-        print('read ftdna file')
-        with gzip.open(tf.name, "rt", newline="\n") as ftdna_file:
-            for line in ftdna_file:
-                if valid_line(line):
-                    tf_out.write(line.encode('ascii'))
-        tf_out.flush()
-        tf_out.seek(0)
-        print('cleaned file')
-        api.delete_file(access_token,
-                        str(member['project_member_id']),
-                        file_id=str(data_file['id']))
-        print('deleted old')
-        upload_new_file(tf_out,
+    # Save raw 23andMe genotyping to temp file.
+    raw_filename = filename_base + '.txt'
+
+    metadata = {
+                'description':
+                '23andMe full genotyping data, original format',
+                'tags': ['23andMe', 'genotyping'],
+                'creation_date': arrow.get().format(),
+        }
+    with open(temp_join(tmp_directory,
+                        raw_filename), 'w') as raw_file:
+        raw_23andme.seek(0)
+        shutil.copyfileobj(raw_23andme, raw_file)
+        raw_file.flush()
+
+    with open(temp_join(tmp_directory,
+                        raw_filename), 'r+b') as raw_file:
+
+        upload_new_file(raw_file,
                         access_token,
                         str(member['project_member_id']),
-                        data_file['metadata'])
-    except:
-        print('delete broken file')
-        api.delete_file(access_token,
+                        metadata)
+
+    # Save VCF 23andMe genotyping to temp file.
+    vcf_filename = filename_base + '.vcf.bz2'
+    metadata = {
+        'description': '23andMe full genotyping data, VCF format',
+        'tags': ['23andMe', 'genotyping', 'vcf'],
+        'creation_date': arrow.get().format()
+    }
+    print(temp_join(tmp_directory, vcf_filename))
+    with bz2.BZ2File(temp_join(tmp_directory,
+                               vcf_filename), 'w') as vcf_file:
+        vcf_23andme.seek(0)
+        for i in vcf_23andme:
+            vcf_file.write(i.encode())
+
+    with open(temp_join(tmp_directory,
+                        vcf_filename), 'r+b') as vcf_file:
+
+        upload_new_file(vcf_file,
+                        access_token,
                         str(member['project_member_id']),
-                        file_id=str(data_file['id']))
-        api.message("A broken file was deleted",
-                    "While processing your FamilyTreeDNA file "
-                    "we noticed that your file does not conform "
-                    "to the expected specifications and it was "
-                    "thus deleted. Please make sure you upload "
-                    "the right file:\nWe expect the file to be a "
-                    "single, - gzipped (ends in .gz) - file as "
-                    "you can download from FamilyTreeDNA. Please "
-                    "do not alter or unzip this file, as unexpected additions "
-                    "also invalidate the file.",
-                    access_token)
+                        metadata)
 
 
 @app.task(bind=True)
@@ -144,5 +359,5 @@ def clean_uploaded_file(self, access_token, file_id):
     for dfile in member['data']:
         if dfile['id'] == file_id:
             print(dfile)
-            process_target(dfile, access_token, member, dfile['metadata'])
+            process_file(dfile, access_token, member, dfile['metadata'])
     pass
