@@ -1,3 +1,4 @@
+from django.conf import settings
 import os
 from celery import Celery
 import tempfile
@@ -17,7 +18,7 @@ import arrow
 
 from .helpers import vcf_header, temp_join, open_archive
 
-from django.conf import settings
+
 
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'oh_data_uploader.settings')
