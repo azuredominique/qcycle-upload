@@ -137,7 +137,6 @@ def normalize_23andme_datetime(re_datetime_string, dateline):
                                 dateline).groups()[0]
 
     re_norm_day = r'(?<=[a-z])  ([1-9])(?= [0-9][0-9]:[0-9][0-9])'
-
     datetime_norm = re.sub(re_norm_day, r' 0\1', datetime_string)
     datetime_23andme = datetime.strptime(datetime_norm,
                                          '%a %b %d %H:%M:%S %Y')
@@ -180,7 +179,6 @@ def clean_raw_23andme(closed_input_file):
         header_lines += next_line
 
         next_line = input_file.readline()
-
     if (header_lines.splitlines() == header_v1.splitlines() or
             header_lines.splitlines() == header_v2.splitlines()):
         output.write(header_lines)
