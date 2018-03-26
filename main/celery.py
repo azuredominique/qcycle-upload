@@ -176,7 +176,7 @@ def clean_raw_23andme(closed_input_file):
     next_line = input_file.readline()
 
     while next_line.startswith('#'):
-        header_lines += next_line
+        header_lines += next_line.rstrip() + "\n"
 
         next_line = input_file.readline()
     if (header_lines.splitlines() == header_v1.splitlines() or
