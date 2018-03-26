@@ -220,31 +220,32 @@ def clean_raw_23andme(closed_input_file):
     return output
 
 
-def upload_new_file(cleaned_file,
+def upload_new_file(closed_file,
                     access_token,
                     project_member_id,
                     metadata):
-    upload_url = '{}?access_token={}'.format(
-        OH_DIRECT_UPLOAD, access_token)
-    req1 = requests.post(upload_url,
-                         data={'project_member_id': project_member_id,
-                               'filename': cleaned_file.name,
-                               'metadata': json.dumps(metadata)})
-    if req1.status_code != 201:
-        raise Exception('Bad response when starting file upload.')
-    # Upload to S3 target.
-    req2 = requests.put(url=req1.json()['url'], data=cleaned_file)
-    if req2.status_code != 200:
-        raise Exception('Bad response when uploading file.')
+    with open(closed_file, 'r+b') as upload_file:
+        upload_url = '{}?access_token={}'.format(
+            OH_DIRECT_UPLOAD, access_token)
+        req1 = requests.post(upload_url,
+                             data={'project_member_id': project_member_id,
+                                   'filename': upload_file.name,
+                                   'metadata': json.dumps(metadata)})
+        if req1.status_code != 201:
+            raise Exception('Bad response when starting file upload.')
+        # Upload to S3 target.
+        req2 = requests.put(url=req1.json()['url'], data=upload_file)
+        if req2.status_code != 200:
+            raise Exception('Bad response when uploading file.')
 
-    # Report completed upload to Open Humans.
-    complete_url = ('{}?access_token={}'.format(
-        OH_DIRECT_UPLOAD_COMPLETE, access_token))
-    req3 = requests.post(complete_url,
-                         data={'project_member_id': project_member_id,
-                               'file_id': req1.json()['id']})
-    if req3.status_code != 200:
-        raise Exception('Bad response when completing file upload.')
+        # Report completed upload to Open Humans.
+        complete_url = ('{}?access_token={}'.format(
+            OH_DIRECT_UPLOAD_COMPLETE, access_token))
+        req3 = requests.post(complete_url,
+                             data={'project_member_id': project_member_id,
+                                   'file_id': req1.json()['id']})
+        if req3.status_code != 200:
+            raise Exception('Bad response when completing file upload.')
 
 
 def process_file(dfile, access_token, member, metadata):
@@ -274,12 +275,10 @@ def process_file(dfile, access_token, member, metadata):
             shutil.copyfileobj(raw_23andme, raw_file)
             raw_file.flush()
 
-        with open(raw_filename, 'r+b') as raw_file:
-
-            upload_new_file(raw_file,
-                            access_token,
-                            str(member['project_member_id']),
-                            metadata)
+        upload_new_file(raw_filename,
+                        access_token,
+                        str(member['project_member_id']),
+                        metadata)
 
         # Save VCF 23andMe genotyping to temp file.
         vcf_filename = filename_base + '.vcf.bz2'
@@ -295,12 +294,12 @@ def process_file(dfile, access_token, member, metadata):
             for i in vcf_23andme:
                 vcf_file.write(i.encode())
 
-        with open(vcf_filename, 'r+b') as vcf_file:
-            upload_new_file(vcf_file,
-                            access_token,
-                            str(member['project_member_id']),
-                            metadata)
+        upload_new_file(vcf_filename,
+                        access_token,
+                        str(member['project_member_id']),
+                        metadata)
     except:
+        raise
         api.message("23andMe integration: A broken file was deleted",
                     "While processing your 23andMe file "
                     "we noticed that your file does not conform "
