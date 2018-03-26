@@ -195,7 +195,12 @@ def clean_raw_23andme(closed_input_file):
     bad_format = False
 
     while next_line:
-        if re.match(r'(rs|i)[0-9]+\t[1-9XYM][0-9T]?\t[0-9]+\t[ACGT\-ID][ACGT\-ID]?', next_line):
+        regex = re.compile(r"""(rs|i)[0-9]+
+            \t[1-9XYM][0-9T]?
+            \t[0-9]+
+            \t[ACGT\-ID][ACGT\-ID]?
+            """, re.VERBOSE)
+        if re.match(regex, next_line):
             output.write(next_line)
         else:
             # Only report this type of format issue once.
@@ -243,62 +248,75 @@ def upload_new_file(cleaned_file,
 
 
 def process_file(dfile, access_token, member, metadata):
-    infile_suffix = dfile['basename'].split(".")[-1]
-    tf_in = tempfile.NamedTemporaryFile(suffix="."+infile_suffix)
-    tf_in.write(requests.get(dfile['download_url']).content)
-    tf_in.flush()
-    tmp_directory = tempfile.mkdtemp()
-    filename_base = '23andMe-genotyping'
+    try:
+        infile_suffix = dfile['basename'].split(".")[-1]
+        tf_in = tempfile.NamedTemporaryFile(suffix="."+infile_suffix)
+        tf_in.write(requests.get(dfile['download_url']).content)
+        tf_in.flush()
+        tmp_directory = tempfile.mkdtemp()
+        filename_base = '23andMe-genotyping'
 
-    raw_23andme = clean_raw_23andme(tf_in)
-    raw_23andme.seek(0)
-    vcf_23andme = vcf_from_raw_23andme(raw_23andme)
-
-    # Save raw 23andMe genotyping to temp file.
-    raw_filename = filename_base + '.txt'
-
-    metadata = {
-                'description':
-                '23andMe full genotyping data, original format',
-                'tags': ['23andMe', 'genotyping'],
-                'creation_date': arrow.get().format(),
-        }
-    with open(temp_join(tmp_directory,
-                        raw_filename), 'w') as raw_file:
+        raw_23andme = clean_raw_23andme(tf_in)
         raw_23andme.seek(0)
-        shutil.copyfileobj(raw_23andme, raw_file)
-        raw_file.flush()
+        vcf_23andme = vcf_from_raw_23andme(raw_23andme)
 
-    with open(temp_join(tmp_directory,
-                        raw_filename), 'r+b') as raw_file:
+        # Save raw 23andMe genotyping to temp file.
+        raw_filename = filename_base + '.txt'
+        raw_filename = temp_join(tmp_directory, raw_filename)
+        metadata = {
+                    'description':
+                    '23andMe full genotyping data, original format',
+                    'tags': ['23andMe', 'genotyping'],
+                    'creation_date': arrow.get().format(),
+            }
+        with open(raw_filename, 'w') as raw_file:
+            raw_23andme.seek(0)
+            shutil.copyfileobj(raw_23andme, raw_file)
+            raw_file.flush()
 
-        upload_new_file(raw_file,
-                        access_token,
+        with open(raw_filename, 'r+b') as raw_file:
+
+            upload_new_file(raw_file,
+                            access_token,
+                            str(member['project_member_id']),
+                            metadata)
+
+        # Save VCF 23andMe genotyping to temp file.
+        vcf_filename = filename_base + '.vcf.bz2'
+        vcf_filename = temp_join(tmp_directory, vcf_filename)
+
+        metadata = {
+            'description': '23andMe full genotyping data, VCF format',
+            'tags': ['23andMe', 'genotyping', 'vcf'],
+            'creation_date': arrow.get().format()
+        }
+        with bz2.BZ2File(vcf_filename, 'w') as vcf_file:
+            vcf_23andme.seek(0)
+            for i in vcf_23andme:
+                vcf_file.write(i.encode())
+
+        with open(vcf_filename, 'r+b') as vcf_file:
+            upload_new_file(vcf_file,
+                            access_token,
+                            str(member['project_member_id']),
+                            metadata)
+    except:
+        api.message("23andMe integration: A broken file was deleted",
+                    "While processing your 23andMe file "
+                    "we noticed that your file does not conform "
+                    "to the expected specifications and it was "
+                    "thus deleted. Please make sure you upload "
+                    "the right file:\nWe expect the file to be a "
+                    "single txt file (either unzipped, bz2 zipped or gzipped) "
+                    "or a .zip file that contains a single txt file (this is "
+                    " what you can download from 23andMe right away) Please "
+                    "do not alter the original txt file, as unexpected "
+                    "additions can invalidate the file.",
+                    access_token)
+    finally:
+        api.delete_file(access_token,
                         str(member['project_member_id']),
-                        metadata)
-
-    # Save VCF 23andMe genotyping to temp file.
-    vcf_filename = filename_base + '.vcf.bz2'
-    metadata = {
-        'description': '23andMe full genotyping data, VCF format',
-        'tags': ['23andMe', 'genotyping', 'vcf'],
-        'creation_date': arrow.get().format()
-    }
-    with bz2.BZ2File(temp_join(tmp_directory,
-                               vcf_filename), 'w') as vcf_file:
-        vcf_23andme.seek(0)
-        for i in vcf_23andme:
-            vcf_file.write(i.encode())
-
-    with open(temp_join(tmp_directory,
-                        vcf_filename), 'r+b') as vcf_file:
-        upload_new_file(vcf_file,
-                        access_token,
-                        str(member['project_member_id']),
-                        metadata)
-    api.delete_file(access_token,
-                    str(member['project_member_id']),
-                    file_id=str(dfile['id']))
+                        file_id=str(dfile['id']))
 
 
 @app.task(bind=True)
