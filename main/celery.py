@@ -308,13 +308,14 @@ def process_file(dfile, access_token, member, metadata):
                     " what you can download from 23andMe right away) Please "
                     "do not alter the original txt file, as unexpected "
                     "additions can invalidate the file.",
-                    access_token)
+                    access_token, base_url=OH_BASE_URL)
         raise
 
     finally:
         api.delete_file(access_token,
                         str(member['project_member_id']),
-                        file_id=str(dfile['id']))
+                        file_id=str(dfile['id']),
+                        base_url=OH_BASE_URL)
 
 
 @app.task(bind=True)
