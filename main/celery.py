@@ -137,7 +137,6 @@ def normalize_23andme_datetime(re_datetime_string, dateline):
                                 dateline).groups()[0]
 
     re_norm_day = r'(?<=[a-z])  ([1-9])(?= [0-9][0-9]:[0-9][0-9])'
-
     datetime_norm = re.sub(re_norm_day, r' 0\1', datetime_string)
     datetime_23andme = datetime.strptime(datetime_norm,
                                          '%a %b %d %H:%M:%S %Y')
@@ -177,10 +176,9 @@ def clean_raw_23andme(closed_input_file):
     next_line = input_file.readline()
 
     while next_line.startswith('#'):
-        header_lines += next_line
+        header_lines += next_line.rstrip() + "\n"
 
         next_line = input_file.readline()
-
     if (header_lines.splitlines() == header_v1.splitlines() or
             header_lines.splitlines() == header_v2.splitlines()):
         output.write(header_lines)
@@ -195,7 +193,12 @@ def clean_raw_23andme(closed_input_file):
     bad_format = False
 
     while next_line:
-        if re.match(r'(rs|i)[0-9]+\t[1-9XYM][0-9T]?\t[0-9]+\t[ACGT\-ID][ACGT\-ID]?', next_line):
+        regex = re.compile(r"""(rs|i)[0-9]+
+            \t[1-9XYM][0-9T]?
+            \t[0-9]+
+            \t[ACGT\-ID][ACGT\-ID]?
+            """, re.VERBOSE)
+        if re.match(regex, next_line):
             output.write(next_line)
         else:
             # Only report this type of format issue once.
@@ -215,90 +218,103 @@ def clean_raw_23andme(closed_input_file):
     return output
 
 
-def upload_new_file(cleaned_file,
+def upload_new_file(closed_file,
                     access_token,
                     project_member_id,
                     metadata):
-    upload_url = '{}?access_token={}'.format(
-        OH_DIRECT_UPLOAD, access_token)
-    req1 = requests.post(upload_url,
-                         data={'project_member_id': project_member_id,
-                               'filename': cleaned_file.name,
-                               'metadata': json.dumps(metadata)})
-    if req1.status_code != 201:
-        raise Exception('Bad response when starting file upload.')
-    # Upload to S3 target.
-    req2 = requests.put(url=req1.json()['url'], data=cleaned_file)
-    if req2.status_code != 200:
-        raise Exception('Bad response when uploading file.')
+    with open(closed_file, 'r+b') as upload_file:
+        upload_url = '{}?access_token={}'.format(
+            OH_DIRECT_UPLOAD, access_token)
+        req1 = requests.post(upload_url,
+                             data={'project_member_id': project_member_id,
+                                   'filename': upload_file.name,
+                                   'metadata': json.dumps(metadata)})
+        if req1.status_code != 201:
+            raise Exception('Bad response when starting file upload.')
+        # Upload to S3 target.
+        req2 = requests.put(url=req1.json()['url'], data=upload_file)
+        if req2.status_code != 200:
+            raise Exception('Bad response when uploading file.')
 
-    # Report completed upload to Open Humans.
-    complete_url = ('{}?access_token={}'.format(
-        OH_DIRECT_UPLOAD_COMPLETE, access_token))
-    req3 = requests.post(complete_url,
-                         data={'project_member_id': project_member_id,
-                               'file_id': req1.json()['id']})
-    if req3.status_code != 200:
-        raise Exception('Bad response when completing file upload.')
+        # Report completed upload to Open Humans.
+        complete_url = ('{}?access_token={}'.format(
+            OH_DIRECT_UPLOAD_COMPLETE, access_token))
+        req3 = requests.post(complete_url,
+                             data={'project_member_id': project_member_id,
+                                   'file_id': req1.json()['id']})
+        if req3.status_code != 200:
+            raise Exception('Bad response when completing file upload.')
 
 
 def process_file(dfile, access_token, member, metadata):
-    infile_suffix = dfile['basename'].split(".")[-1]
-    tf_in = tempfile.NamedTemporaryFile(suffix="."+infile_suffix)
-    tf_in.write(requests.get(dfile['download_url']).content)
-    tf_in.flush()
-    tmp_directory = tempfile.mkdtemp()
-    filename_base = '23andMe-genotyping'
+    try:
+        infile_suffix = dfile['basename'].split(".")[-1]
+        tf_in = tempfile.NamedTemporaryFile(suffix="."+infile_suffix)
+        tf_in.write(requests.get(dfile['download_url']).content)
+        tf_in.flush()
+        tmp_directory = tempfile.mkdtemp()
+        filename_base = '23andMe-genotyping'
 
-    raw_23andme = clean_raw_23andme(tf_in)
-    raw_23andme.seek(0)
-    vcf_23andme = vcf_from_raw_23andme(raw_23andme)
-
-    # Save raw 23andMe genotyping to temp file.
-    raw_filename = filename_base + '.txt'
-
-    metadata = {
-                'description':
-                '23andMe full genotyping data, original format',
-                'tags': ['23andMe', 'genotyping'],
-                'creation_date': arrow.get().format(),
-        }
-    with open(temp_join(tmp_directory,
-                        raw_filename), 'w') as raw_file:
+        raw_23andme = clean_raw_23andme(tf_in)
         raw_23andme.seek(0)
-        shutil.copyfileobj(raw_23andme, raw_file)
-        raw_file.flush()
+        vcf_23andme = vcf_from_raw_23andme(raw_23andme)
 
-    with open(temp_join(tmp_directory,
-                        raw_filename), 'r+b') as raw_file:
+        # Save raw 23andMe genotyping to temp file.
+        raw_filename = filename_base + '.txt'
+        raw_filename = temp_join(tmp_directory, raw_filename)
+        metadata = {
+                    'description':
+                    '23andMe full genotyping data, original format',
+                    'tags': ['23andMe', 'genotyping'],
+                    'creation_date': arrow.get().format(),
+            }
+        with open(raw_filename, 'w') as raw_file:
+            raw_23andme.seek(0)
+            shutil.copyfileobj(raw_23andme, raw_file)
+            raw_file.flush()
 
-        upload_new_file(raw_file,
+        upload_new_file(raw_filename,
                         access_token,
                         str(member['project_member_id']),
                         metadata)
 
-    # Save VCF 23andMe genotyping to temp file.
-    vcf_filename = filename_base + '.vcf.bz2'
-    metadata = {
-        'description': '23andMe full genotyping data, VCF format',
-        'tags': ['23andMe', 'genotyping', 'vcf'],
-        'creation_date': arrow.get().format()
-    }
-    with bz2.BZ2File(temp_join(tmp_directory,
-                               vcf_filename), 'w') as vcf_file:
-        vcf_23andme.seek(0)
-        for i in vcf_23andme:
-            vcf_file.write(i.encode())
+        # Save VCF 23andMe genotyping to temp file.
+        vcf_filename = filename_base + '.vcf.bz2'
+        vcf_filename = temp_join(tmp_directory, vcf_filename)
 
-    with open(temp_join(tmp_directory,
-                        vcf_filename), 'r+b') as vcf_file:
-        upload_new_file(vcf_file,
+        metadata = {
+            'description': '23andMe full genotyping data, VCF format',
+            'tags': ['23andMe', 'genotyping', 'vcf'],
+            'creation_date': arrow.get().format()
+        }
+        with bz2.BZ2File(vcf_filename, 'w') as vcf_file:
+            vcf_23andme.seek(0)
+            for i in vcf_23andme:
+                vcf_file.write(i.encode())
+
+        upload_new_file(vcf_filename,
                         access_token,
                         str(member['project_member_id']),
                         metadata)
-    api.delete_file(access_token,
-                    str(member['project_member_id']),
-                    file_id=str(dfile['id']))
+    except:
+        api.message("23andMe integration: A broken file was deleted",
+                    "While processing your 23andMe file "
+                    "we noticed that your file does not conform "
+                    "to the expected specifications and it was "
+                    "thus deleted. Please make sure you upload "
+                    "the right file:\nWe expect the file to be a "
+                    "single txt file (either unzipped, bz2 zipped or gzipped) "
+                    "or a .zip file that contains a single txt file (this is "
+                    " what you can download from 23andMe right away) Please "
+                    "do not alter the original txt file, as unexpected "
+                    "additions can invalidate the file.",
+                    access_token)
+        raise
+
+    finally:
+        api.delete_file(access_token,
+                        str(member['project_member_id']),
+                        file_id=str(dfile['id']))
 
 
 @app.task(bind=True)

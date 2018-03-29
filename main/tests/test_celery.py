@@ -2,9 +2,12 @@ from django.test import TestCase, RequestFactory
 from django.conf import settings
 from django.core.management import call_command
 from open_humans.models import OpenHumansMember
-from main.celery import read_reference
+from main.celery import read_reference, clean_raw_23andme
 from main.celery_helper import vcf_header
 import os
+import tempfile
+import requests
+import requests_mock
 
 
 class ParsingTestCase(TestCase):
@@ -55,3 +58,27 @@ class ParsingTestCase(TestCase):
                                   '#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER' +
                                   '\tINFO\tFORMAT\t23ANDME_DATA']
         self.assertEqual([i.split("=")[0] for i in hd], expected_header_fields)
+
+    def test_23andme_cleaning(self):
+        """
+        Test that cleanup works as expected
+        """
+        with requests_mock.Mocker() as m:
+            get_url = 'http://example.com/23andme_file.txt'
+            closed_input_file = os.path.join(os.path.dirname(__file__),
+                                             'fixtures/23andme_invalid.txt')
+            fhandle = open(closed_input_file, "rb")
+            content = fhandle.read()
+            m.register_uri('GET',
+                           get_url,
+                           content=content,
+                           status_code=200)
+            tf_in = tempfile.NamedTemporaryFile(suffix=".txt")
+            tf_in.write(requests.get(get_url).content)
+            tf_in.flush()
+
+            cleaned_input = clean_raw_23andme(tf_in)
+            cleaned_input.seek(0)
+            lines = cleaned_input.read()
+            self.assertEqual(lines.find('John Doe'), -1)
+            self.assertNotEqual(lines.find('data file generated'), -1)
