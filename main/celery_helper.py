@@ -1,6 +1,7 @@
 import zipfile
 import bz2
 import gzip
+import io
 import os
 from datetime import date
 import logging
@@ -44,7 +45,7 @@ def filter_archive(zip_file):
 
 def open_archive(input_file):
     error_message = ("Input file is expected to be either '.txt', "
-                     "'.txt.gz', '.txt.bz2', or a single '.txt' file in a "
+                     "'.gz', '.bz2', or a single '.txt' file in a "
                      "'.zip' ZIP archive.")
     if input_file.name.endswith('.zip'):
         zip_file = zipfile.ZipFile(input_file)
@@ -54,11 +55,11 @@ def open_archive(input_file):
             logger.warn(error_message)
             raise ValueError(error_message)
 
-        return zip_file.open(zip_files[0])
-    elif input_file.name.endswith('.txt.gz'):
-        return gzip.open(input_file.name)
-    elif input_file.name.endswith('.txt.bz2'):
-        return bz2.BZ2File(input_file.name)
+        return io.TextIOWrapper(zip_file.open(zip_files[0]))
+    elif input_file.name.endswith('.gz'):
+        return io.TextIOWrapper(gzip.open(input_file.name))
+    elif input_file.name.endswith('.bz2'):
+        return io.TextIOWrapper(bz2.BZ2File(input_file.name))
     elif input_file.name.endswith('.txt'):
         return open(input_file.name)
 
