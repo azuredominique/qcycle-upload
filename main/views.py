@@ -39,7 +39,8 @@ def delete_file(request, file_id):
         ohapi.api.delete_files(
             project_member_id=oh_member.oh_id,
             access_token=oh_member.get_access_token(**client_info),
-            file_id=file_id)
+            file_id=file_id,
+            base_url=OH_BASE_URL)
         return redirect('list')
     return redirect('index')
 
@@ -52,7 +53,8 @@ def delete_all_oh_files(oh_member):
     ohapi.api.delete_files(
         project_member_id=oh_member.oh_id,
         access_token=oh_member.get_access_token(**client_info),
-        all_files=True)
+        all_files=True,
+        base_url=OH_BASE_URL)
 
 
 def raise_http_error(url, response, message):
@@ -123,6 +125,8 @@ def file_upload_prep_context(oh_member, proj_config):
                'oh_member': oh_member,
                'files': files,
                'files_js': files_js,
+               'oh_direct_upload_url': OH_DIRECT_UPLOAD,
+               'oh_direct_upload_complete_url': OH_DIRECT_UPLOAD_COMPLETE,
                'upload_description': proj_config.upload_description}
     return context
 
@@ -131,7 +135,8 @@ def set_auth_url(proj_config):
     if proj_config.oh_client_id:
         auth_url = ohapi.api.oauth2_auth_url(
             client_id=proj_config.oh_client_id,
-            redirect_uri=OH_OAUTH2_REDIRECT_URI)
+            redirect_uri=OH_OAUTH2_REDIRECT_URI,
+            base_url=OH_BASE_URL)
     else:
         auth_url = 'http://www.example.com'
     return auth_url
@@ -175,6 +180,8 @@ def overview(request):
                    'files': files,
                    'files_js': files_js,
                    'access_token': oh_member.get_access_token(**client_info),
+                   'oh_direct_upload_url': OH_DIRECT_UPLOAD,
+                   'oh_direct_upload_complete_url': OH_DIRECT_UPLOAD_COMPLETE,
                    "overview": "".join(proj_config.overview)}
         return render(request, 'main/overview.html', context=context)
     return redirect('index')
@@ -250,7 +257,9 @@ def about(request):
 def list_files(request):
     if request.user.is_authenticated and request.user.username != 'admin':
         oh_member = request.user.openhumansmember
-        data = ohapi.api.exchange_oauth2_member(oh_member.get_access_token())
+        data = ohapi.api.exchange_oauth2_member(
+            oh_member.get_access_token(),
+            base_url=OH_BASE_URL)
         context = {'files': data['data']}
         return render(request, 'main/list.html',
                       context=context)

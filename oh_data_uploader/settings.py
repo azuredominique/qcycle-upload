@@ -36,7 +36,8 @@ ON_HEROKU = bool(HEROKUCONFIG_APP_NAME)
 ALLOWED_HOSTS = ['*']
 
 # Read OH settings from .env/environment variables
-OPENHUMANS_OH_BASE_URL = 'https://www.openhumans.org'
+OPENHUMANS_OH_BASE_URL = os.getenv('OPENHUMANS_OH_BASE_URL',
+                                   'https://www.openhumans.org')
 OPENHUMANS_CLIENT_ID = os.getenv('OH_CLIENT_ID')
 OPENHUMANS_CLIENT_SECRET = os.getenv('OH_CLIENT_SECRET')
 

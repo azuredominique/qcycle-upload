@@ -298,12 +298,13 @@ def process_file(dfile, access_token, member, metadata):
                         metadata)
     api.delete_file(access_token,
                     str(member['project_member_id']),
-                    file_id=str(dfile['id']))
+                    file_id=str(dfile['id']),
+                    base_url=OH_BASE_URL)
 
 
 @app.task(bind=True)
 def clean_uploaded_file(self, access_token, file_id):
-    member = api.exchange_oauth2_member(access_token)
+    member = api.exchange_oauth2_member(access_token, base_url=OH_BASE_URL)
     for dfile in member['data']:
         if dfile['id'] == file_id:
             process_file(dfile, access_token, member, dfile['metadata'])
