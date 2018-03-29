@@ -113,10 +113,10 @@
         },
         "humanfriendly": {
             "hashes": [
-                "sha256:587b16ce804bec8e3cbb8c420decea051b38e3d895272b2c1e38fc69b4286b1c",
-                "sha256:d0e74171b87318a94b99520e4f0c5651e944b5f11d696c46be3330bb82b85300"
+                "sha256:c80f17f334db538dcd2bced26bb2935bc57cda34c33e2a5d5c24e259f4ab721f",
+                "sha256:c2c98143f0b01fc65fee6b6a0436b01d8c77b55cad6ae7bf268e1fb586aae6b7"
             ],
-            "version": "==4.8"
+            "version": "==4.9"
         },
         "idna": {
             "hashes": [
@@ -141,9 +141,9 @@
         },
         "open-humans-api": {
             "hashes": [
-                "sha256:7a19d2cfbac504fdd156d5a84ad77a350a5c445dcfda6813aa6ac8d6f0522cf3"
+                "sha256:d9da18e76089ea86d60cc1c0685170bc68efd4b197dc4b65243e7770c81e9246"
             ],
-            "version": "==0.1.7"
+            "version": "==0.2.0"
         },
         "psycopg2": {
             "hashes": [
@@ -179,10 +179,10 @@
         },
         "python-dateutil": {
             "hashes": [
-                "sha256:07009062406cffd554a9b4135cd2ff167c9bf6b7aac61fe946c93e69fad1bbd8",
-                "sha256:8f95bb7e6edbb2456a51a1fb58c8dca942024b4f5844cae62c90aa88afe6e300"
+                "sha256:3220490fb9741e2342e1cf29a503394fdac874bc39568288717ee67047ff29df",
+                "sha256:9d8074be4c993fbe4947878ce593052f71dac82932a677d49194d8ce9778002e"
             ],
-            "version": "==2.7.0"
+            "version": "==2.7.2"
         },
         "pytz": {
             "hashes": [
