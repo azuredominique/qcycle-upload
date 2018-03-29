@@ -24,9 +24,6 @@ VCF_FIELDS = ['CHROM', 'POS', 'ID', 'REF', 'ALT', 'QUAL', 'FILTER',
               'INFO', 'FORMAT', '23ANDME_DATA']
 
 OH_BASE_URL = settings.OPENHUMANS_OH_BASE_URL
-OH_API_BASE = OH_BASE_URL + '/api/direct-sharing'
-OH_DIRECT_UPLOAD = OH_API_BASE + '/project/files/upload/direct/'
-OH_DIRECT_UPLOAD_COMPLETE = OH_API_BASE + '/project/files/upload/complete/'
 
 REF_23ANDME_FILE = os.path.join(os.path.dirname(__file__),
                                 'references/reference_b37.txt')
@@ -218,34 +215,6 @@ def clean_raw_23andme(closed_input_file):
     return output
 
 
-def upload_new_file(closed_file,
-                    access_token,
-                    project_member_id,
-                    metadata):
-    with open(closed_file, 'r+b') as upload_file:
-        upload_url = '{}?access_token={}'.format(
-            OH_DIRECT_UPLOAD, access_token)
-        req1 = requests.post(upload_url,
-                             data={'project_member_id': project_member_id,
-                                   'filename': upload_file.name,
-                                   'metadata': json.dumps(metadata)})
-        if req1.status_code != 201:
-            raise Exception('Bad response when starting file upload.')
-        # Upload to S3 target.
-        req2 = requests.put(url=req1.json()['url'], data=upload_file)
-        if req2.status_code != 200:
-            raise Exception('Bad response when uploading file.')
-
-        # Report completed upload to Open Humans.
-        complete_url = ('{}?access_token={}'.format(
-            OH_DIRECT_UPLOAD_COMPLETE, access_token))
-        req3 = requests.post(complete_url,
-                             data={'project_member_id': project_member_id,
-                                   'file_id': req1.json()['id']})
-        if req3.status_code != 200:
-            raise Exception('Bad response when completing file upload.')
-
-
 def process_file(dfile, access_token, member, metadata):
     try:
         infile_suffix = dfile['basename'].split(".")[-1]
@@ -273,10 +242,9 @@ def process_file(dfile, access_token, member, metadata):
             shutil.copyfileobj(raw_23andme, raw_file)
             raw_file.flush()
 
-        upload_new_file(raw_filename,
-                        access_token,
-                        str(member['project_member_id']),
-                        metadata)
+        api.upload_aws(raw_filename, metadata,
+                       access_token, base_url=OH_BASE_URL,
+                       project_member_id=str(member['project_member_id']))
 
         # Save VCF 23andMe genotyping to temp file.
         vcf_filename = filename_base + '.vcf.bz2'
@@ -292,10 +260,10 @@ def process_file(dfile, access_token, member, metadata):
             for i in vcf_23andme:
                 vcf_file.write(i.encode())
 
-        upload_new_file(vcf_filename,
-                        access_token,
-                        str(member['project_member_id']),
-                        metadata)
+        api.upload_aws(vcf_filename, metadata,
+                       access_token, base_url=OH_BASE_URL,
+                       project_member_id=str(member['project_member_id']))
+
     except:
         api.message("23andMe integration: A broken file was deleted",
                     "While processing your 23andMe file "
@@ -308,18 +276,19 @@ def process_file(dfile, access_token, member, metadata):
                     " what you can download from 23andMe right away) Please "
                     "do not alter the original txt file, as unexpected "
                     "additions can invalidate the file.",
-                    access_token)
+                    access_token, base_url=OH_BASE_URL)
         raise
 
     finally:
         api.delete_file(access_token,
                         str(member['project_member_id']),
-                        file_id=str(dfile['id']))
+                        file_id=str(dfile['id']),
+                        base_url=OH_BASE_URL)
 
 
 @app.task(bind=True)
 def clean_uploaded_file(self, access_token, file_id):
-    member = api.exchange_oauth2_member(access_token)
+    member = api.exchange_oauth2_member(access_token, base_url=OH_BASE_URL)
     for dfile in member['data']:
         if dfile['id'] == file_id:
             process_file(dfile, access_token, member, dfile['metadata'])

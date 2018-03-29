@@ -15,7 +15,8 @@ def get_create_member(data):
     and return an oh_member object
     '''
     oh_id = ohapi.api.exchange_oauth2_member(
-        access_token=data['access_token'])['project_member_id']
+        access_token=data['access_token'],
+        base_url=OH_BASE_URL)['project_member_id']
     try:
         oh_member = OpenHumansMember.objects.get(oh_id=oh_id)
         logger.debug('Member {} re-authorized.'.format(oh_id))
@@ -49,11 +50,11 @@ def oh_code_to_member(code):
         redirect_uri=OH_OAUTH2_REDIRECT_URI,
         base_url=OH_BASE_URL)
     if 'error' in data:
-        logger.debug('Error in token exchange: {}'.format(data))
+        logger.error('Error in token exchange: {}'.format(data))
         return None
 
     if 'access_token' in data:
         return get_create_member(data)
     else:
-        logger.warning('Neither token nor error info in OH response!')
+        logger.error('Neither token nor error info in OH response!')
         return None
