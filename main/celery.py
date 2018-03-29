@@ -297,7 +297,6 @@ def process_file(dfile, access_token, member, metadata):
                         str(member['project_member_id']),
                         metadata)
     except:
-        raise
         api.message("23andMe integration: A broken file was deleted",
                     "While processing your 23andMe file "
                     "we noticed that your file does not conform "
@@ -310,6 +309,8 @@ def process_file(dfile, access_token, member, metadata):
                     "do not alter the original txt file, as unexpected "
                     "additions can invalidate the file.",
                     access_token)
+        raise
+
     finally:
         api.delete_file(access_token,
                         str(member['project_member_id']),
