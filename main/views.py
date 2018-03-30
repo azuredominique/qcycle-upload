@@ -267,11 +267,8 @@ def list_files(request):
 
 
 def trigger(request):
-    """
-    Logout user
-    """
     if request.method == 'POST':
         token = request.POST.get("access_token")
         file_id = request.POST.get("file_id")
-        clean_uploaded_file(token, int(file_id))
+        clean_uploaded_file.delay(token, int(file_id))
     return redirect('index')

@@ -1,0 +1,247 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.4]
+    method: GET
+    uri: https://myawslink.com/member-files/direct-sharing-1337/1234/23andme_valid.zip?Signature=nope&Expires=1522390374&AWSAccessKeyId=nope
+  response:
+    body:
+      string: !!binary |
+        UEsDBBQAAAAIAJ20fUwFEdYDHQIAAJADAAARABwAMjNhbmRtZV92YWxpZC50eHRVVAkAA/nMvVr7
+        zL1adXgLAAEE9QEAAAQUAAAAhZJRi9swDMef008hKIwNuqRN29xWOEZv7PbUY7CDPQ4nURIN28ps
+        p7l++8m+6xjcw/LiRJF++utvLeFxIA+tCgo60gg9WnQqYAv1Bcqtsu0JQYWD5E1wUg62a1iXh932
+        UG6gXG9uFsvFEu5Q8wwCUhDwKcAZnSe2wB1ceHKJn8M9oW4lxyE8Hu/eexxVaiWAL6oZQJNFaNg5
+        9CNbyQwsQE+2F2HfH77lAPfsAGOufK5gRhgdn6lFoOBBThuoI3RCfKssiIgWpEJeyQZ0VmlJerdK
+        2ZobFZJIC2FAcNihQ9sgDJORCnGCDa6kuI3/BRkj4TKKRqW1cEnaiVEzhQGiZmxClBxho548+OBi
+        8Qv/mfq3i/A8/p7iq8wlzw9Mzkxx3ldilPdoan2BeiLdwraSmgcOKGQVZJzo/cjeU60jOUXTpbY8
+        W82qFZ0xRF3iik4y6MEoIeI/4XbCOALbnqMMMtFfNPLLC5bELLlNVZOmcImJyYmrLz6HE8sIZDt2
+        5tlcVfMU4vxebBuU7aVrIwNJ144nG1UdhDyEMPpDUczznKetM5g3bArZnuI6QuHwTHGtfJGW7lUv
+        tv/37drspZdtasqtNrmlIe/5XMi8v+QefWHUeCac4/nTo3LNkDc9fQrqidrbj9W6epOQt9sqiYmr
+        ljWDY8Ne1iaTy6AoKruas3B+U2532Sb7UG72u+x4lIgE9hK52Zf7qsq+fl78AVBLAQIeAxQAAAAI
+        AJ20fUwFEdYDHQIAAJADAAARABgAAAAAAAEAAACkgQAAAAAyM2FuZG1lX3ZhbGlkLnR4dFVUBQAD
+        +cy9WnV4CwABBPUBAAAEFAAAAFBLBQYAAAAAAQABAFcAAABoAgAAAAA=
+    headers:
+      Accept-Ranges: [bytes]
+      Content-Length: ['912']
+      Content-Type: [binary/octet-stream]
+      Date: ['Fri, 30 Mar 2018 00:12:54 GMT']
+      ETag: ['"b9a9ea396e07edfc834f281c19ae055b"']
+      Last-Modified: ['Fri, 30 Mar 2018 00:09:37 GMT']
+      Server: [AmazonS3]
+      x-amz-id-2: [code]
+      x-amz-request-id: [code]
+      x-amz-version-id: [code]
+    status: {code: 200, message: OK}
+- request:
+    body: project_member_id=1234&metadata=%7B%22description%22%3A+%2223andMe+full+genotyping+data%2C+original+format%22%2C+%22tags%22%3A+%5B%2223andMe%22%2C+%22genotyping%22%5D%2C+%22creation_date%22%3A+%222018-03-30+00%3A12%3A54%2B00%3A00%22%7D&filename=23andMe-genotyping.txt
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['271']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [python-requests/2.18.4]
+    method: POST
+    uri: https://www.openhumans.org/api/direct-sharing/project/files/upload/direct/?access_token=myaccesstoken
+  response:
+    body: {string: '{"id":12345,"url":"https://myawslink.com/member-files/direct-sharing-1337/1234/23andMe-genotyping.txt?Signature=nope%3D&Expires=1522390374&AWSAccessKeyId=nope"}'}
+    headers:
+      Allow: ['POST, OPTIONS']
+      Cache-Control: ['no-cache, max-age=0, must-revalidate, no-store']
+      Connection: [close]
+      Content-Language: [en]
+      Content-Type: [application/json]
+      Date: ['Fri, 30 Mar 2018 00:12:53 GMT']
+      Expires: ['Fri, 30 Mar 2018 00:12:54 GMT']
+      Last-Modified: ['Fri, 30 Mar 2018 00:12:54 GMT']
+      Server: [Cowboy]
+      Vary: ['Accept, Accept-Language, Cookie']
+      Via: [1.1 vegur]
+      X-Frame-Options: [SAMEORIGIN]
+    status: {code: 201, message: Created}
+- request:
+    body: !!python/object/new:_io.BytesIO
+      state: !!python/tuple
+      - !!binary |
+        IyBUaGlzIGRhdGEgZmlsZSBnZW5lcmF0ZWQgYnkgMjNhbmRNZSBhdDogVGh1IE1hciAzMCAwMjo0
+        MzoyMSAyMDE3DQojCiMgQmVsb3cgaXMgYSB0ZXh0IHZlcnNpb24gb2YgeW91ciBkYXRhLiBGaWVs
+        ZHMgYXJlIFRBQi1zZXBhcmF0ZWQKIyBFYWNoIGxpbmUgY29ycmVzcG9uZHMgdG8gYSBzaW5nbGUg
+        U05QLiAgRm9yIGVhY2ggU05QLCB3ZSBwcm92aWRlIGl0cyBpZGVudGlmaWVyCiMgKGFuIHJzaWQg
+        b3IgYW4gaW50ZXJuYWwgaWQpLCBpdHMgbG9jYXRpb24gb24gdGhlIHJlZmVyZW5jZSBodW1hbiBn
+        ZW5vbWUsIGFuZCB0aGUKIyBnZW5vdHlwZSBjYWxsIG9yaWVudGVkIHdpdGggcmVzcGVjdCB0byB0
+        aGUgcGx1cyBzdHJhbmQgb24gdGhlIGh1bWFuIHJlZmVyZW5jZQojIHNlcXVlbmNlLiAgICAgV2Ug
+        YXJlIHVzaW5nIHJlZmVyZW5jZSBodW1hbiBhc3NlbWJseSBidWlsZCAzNi4gIE5vdGUgdGhhdCBp
+        dCBpcyBwb3NzaWJsZQojIHRoYXQgZGF0YSBkb3dubG9hZGVkIGF0IGRpZmZlcmVudCB0aW1lcyBt
+        YXkgYmUgZGlmZmVyZW50IGR1ZSB0byBvbmdvaW5nIGltcHJvdmVtZW50cwojIGluIG91ciBhYmls
+        aXR5IHRvIGNhbGwgZ2Vub3R5cGVzLiBNb3JlIGluZm9ybWF0aW9uIGFib3V0IHRoZXNlIGNoYW5n
+        ZXMgY2FuIGJlIGZvdW5kIGF0OgojIGh0dHBzOi8vd3d3LjIzYW5kbWUuY29tL3lvdS9kb3dubG9h
+        ZC9yZXZpc2lvbnMvCiMKIyBNb3JlIGluZm9ybWF0aW9uIG9uIHJlZmVyZW5jZSBodW1hbiBhc3Nl
+        bWJseSBidWlsZCAzNjoKIyBodHRwOi8vd3d3Lm5jYmkubmxtLm5paC5nb3YvcHJvamVjdHMvbWFw
+        dmlldy9tYXBfc2VhcmNoLmNnaT90YXhpZD05NjA2JmJ1aWxkPTM2CiMKIyByc2lkCWNocm9tb3Nv
+        bWUJcG9zaXRpb24JZ2Vub3R5cGUKcnMxMjM0CTEJODIxNTQJQUEKcnMyMzQ1CTEJNzUyNTY2CUdD
+        Cg==
+      - 0
+      - null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['913']
+      User-Agent: [python-requests/2.18.4]
+    method: PUT
+    uri: https://myawslink.com/member-files/direct-sharing-1337/1234/23andMe-genotyping.txt?Signature=nope%3D&Expires=1522390374&AWSAccessKeyId=nope
+  response:
+    body: {string: ''}
+    headers:
+      Content-Length: ['0']
+      Date: ['Fri, 30 Mar 2018 00:12:55 GMT']
+      ETag: ['"52920b2ce27a637fcb443bb0f15d6d27"']
+      Server: [AmazonS3]
+      x-amz-id-2: [code]
+      x-amz-request-id: [code]
+      x-amz-version-id: [code]
+    status: {code: 200, message: OK}
+- request:
+    body: project_member_id=1234&file_id=12345
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['40']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [python-requests/2.18.4]
+    method: POST
+    uri: https://www.openhumans.org/api/direct-sharing/project/files/upload/complete/?access_token=myaccesstoken
+  response:
+    body: {string: '{"size":913,"status":"ok"}'}
+    headers:
+      Allow: ['POST, OPTIONS']
+      Cache-Control: ['must-revalidate, max-age=0, no-cache, no-store']
+      Connection: [close]
+      Content-Language: [en]
+      Content-Type: [application/json]
+      Date: ['Fri, 30 Mar 2018 00:12:54 GMT']
+      Expires: ['Fri, 30 Mar 2018 00:12:55 GMT']
+      Last-Modified: ['Fri, 30 Mar 2018 00:12:55 GMT']
+      Server: [Cowboy]
+      Vary: ['Accept, Accept-Language, Cookie']
+      Via: [1.1 vegur]
+      X-Frame-Options: [SAMEORIGIN]
+    status: {code: 200, message: OK}
+- request:
+    body: project_member_id=1234&metadata=%7B%22description%22%3A+%2223andMe+full+genotyping+data%2C+VCF+format%22%2C+%22tags%22%3A+%5B%2223andMe%22%2C+%22genotyping%22%2C+%22vcf%22%5D%2C+%22creation_date%22%3A+%222018-03-30+00%3A12%3A55%2B00%3A00%22%7D&filename=23andMe-genotyping.vcf.bz2
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['283']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [python-requests/2.18.4]
+    method: POST
+    uri: https://www.openhumans.org/api/direct-sharing/project/files/upload/direct/?access_token=myaccesstoken
+  response:
+    body: {string: '{"id":23456,"url":"https://myaws.com/member-files/direct-sharing-1337/1234/23andMe-genotyping.vcf.bz2?Signature=nope&Expires=1522390375&AWSAccessKeyId=nope"}'}
+    headers:
+      Allow: ['POST, OPTIONS']
+      Cache-Control: ['must-revalidate, max-age=0, no-cache, no-store']
+      Connection: [close]
+      Content-Language: [en]
+      Content-Type: [application/json]
+      Date: ['Fri, 30 Mar 2018 00:12:55 GMT']
+      Expires: ['Fri, 30 Mar 2018 00:12:55 GMT']
+      Last-Modified: ['Fri, 30 Mar 2018 00:12:55 GMT']
+      Server: [Cowboy]
+      Vary: ['Accept, Accept-Language, Cookie']
+      Via: [1.1 vegur]
+      X-Frame-Options: [SAMEORIGIN]
+    status: {code: 201, message: Created}
+- request:
+    body: !!python/object/new:_io.BytesIO
+      state: !!python/tuple
+      - !!binary |
+        QlpoOTFBWSZTWc1ktBcAABPfgAAwGAf/9y/n/xC/59+gMAEK1bEUxGgZEZGmTEyekaMgehDQMQap
+        k0001NigzKGjQGQAAA0aETJT9Sep5NNENGnqAAAAyADSDUwAUqGB2ORaZGgqtNNDc5YvrgJiQJ8i
+        IAUhUC07NkQKOIXy9qosg9VXfPSRQp0yieB0RxG0GQJTpxJjiS8Uw+lbqSCyrtKnGMMCfoYZ5RDk
+        EFTS1w89AME7ostF5GbtUwdu0i4mkkizIlPTmW4I+MQWGmcaoBCitcFQrCgXThDORAUPU9i5tZ77
+        stuM2ILRQETWY1I7kurGxfeNW08O8FytnAjxSR5M4YwEZqAa/gKRmgFA37TGAUR0kd5YMeYqqG1D
+        0yJSMrzc6Vt51vCFzJChaa59EyKARbQyCEiC2GSPQ1lclVbJ1skfNvNUwMQJ/i7kinChIZrJaC4=
+      - 0
+      - null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['341']
+      User-Agent: [python-requests/2.18.4]
+    method: PUT
+    uri: https://myaws.com/member-files/direct-sharing-1337/1234/23andMe-genotyping.vcf.bz2?Signature=nope&Expires=1522390375&AWSAccessKeyId=nope
+  response:
+    body: {string: ''}
+    headers:
+      Content-Length: ['0']
+      Date: ['Fri, 30 Mar 2018 00:12:56 GMT']
+      ETag: ['"be71f4a2a40c3bb1b7fd10ae5cd03ed4"']
+      Server: [AmazonS3]
+      x-amz-id-2: [code]
+      x-amz-request-id: [code]
+      x-amz-version-id: [code]
+    status: {code: 200, message: OK}
+- request:
+    body: project_member_id=1234&file_id=36691
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['40']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [python-requests/2.18.4]
+    method: POST
+    uri: https://www.openhumans.org/api/direct-sharing/project/files/upload/complete/?access_token=myaccesstoken
+  response:
+    body: {string: '{"size":341,"status":"ok"}'}
+    headers:
+      Allow: ['POST, OPTIONS']
+      Cache-Control: ['must-revalidate, max-age=0, no-cache, no-store']
+      Connection: [close]
+      Content-Language: [en]
+      Content-Type: [application/json]
+      Date: ['Fri, 30 Mar 2018 00:12:56 GMT']
+      Expires: ['Fri, 30 Mar 2018 00:12:56 GMT']
+      Last-Modified: ['Fri, 30 Mar 2018 00:12:56 GMT']
+      Server: [Cowboy]
+      Vary: ['Accept, Accept-Language, Cookie']
+      Via: [1.1 vegur]
+      X-Frame-Options: [SAMEORIGIN]
+    status: {code: 200, message: OK}
+- request:
+    body: project_member_id=1234&file_id=23456
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['40']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [python-requests/2.18.4]
+    method: POST
+    uri: https://www.openhumans.org/api/direct-sharing/project/files/delete/?access_token=myaccesstoken
+  response:
+    body: {string: '{"ids":[34567]}'}
+    headers:
+      Allow: ['POST, OPTIONS']
+      Cache-Control: ['no-cache, max-age=0, must-revalidate, no-store']
+      Connection: [close]
+      Content-Language: [en]
+      Content-Type: [application/json]
+      Date: ['Fri, 30 Mar 2018 00:12:55 GMT']
+      Expires: ['Fri, 30 Mar 2018 00:12:56 GMT']
+      Last-Modified: ['Fri, 30 Mar 2018 00:12:56 GMT']
+      Server: [Cowboy]
+      Vary: ['Accept, Accept-Language, Cookie']
+      Via: [1.1 vegur]
+      X-Frame-Options: [SAMEORIGIN]
+    status: {code: 200, message: OK}
+version: 1

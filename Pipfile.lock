@@ -141,9 +141,9 @@
         },
         "open-humans-api": {
             "hashes": [
-                "sha256:2e91605856a9af45415d4897a96c5da38603df08e83d29f47ced6cc77e0e5eef"
+                "sha256:cea8fddd6040ba9820b7386f11260fd2a5a140f85fb2d6b7e2116a86d0771809"
             ],
-            "version": "==0.2.1"
+            "version": "==0.2.2"
         },
         "psycopg2": {
             "hashes": [
