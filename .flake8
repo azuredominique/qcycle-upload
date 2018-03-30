@@ -3,4 +3,6 @@ exclude =
   .git,
   __pycache__,
   docs,
-  migrations
+  migrations,
+  tests,
+  management
