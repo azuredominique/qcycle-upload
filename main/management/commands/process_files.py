@@ -30,13 +30,16 @@ class Command(BaseCommand):
             return False
         return True
 
+    def iterate_member_files(self, ohmember):
+        ohmember_data = api.exchange_oauth2_member(
+                                ohmember.get_access_token())
+        files = ohmember_data['data']
+        for f in files:
+            if not self.check_file_valid(f):
+                clean_uploaded_file.delay(ohmember.access_token,
+                                          f['id'])
+
     def handle(self, *args, **options):
         open_humans_members = OpenHumansMember.objects.all()
         for ohmember in open_humans_members:
-            ohmember_data = api.exchange_oauth2_member(
-                                    ohmember.get_access_token())
-            files = ohmember_data['data']
-            for f in files:
-                if not self.check_file_valid(f):
-                    clean_uploaded_file.delay(ohmember.access_token,
-                                              f['id'])
+            self.iterate_member_files(ohmember)
