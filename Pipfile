@@ -22,7 +22,6 @@ env-tools = "*"
 gunicorn = "*"
 idna = "*"
 markdown = "*"
-open-humans-api = "*"
 "psycopg2" = "*"
 pytz = "*"
 requests = "*"
@@ -31,6 +30,7 @@ whitenoise = "*"
 requests-mock = "*"
 celery = "*"
 redis = "*"
+open-humans-api = "*"
 
 
 [requires]

@@ -1,4 +1,5 @@
 from django.test import TestCase, RequestFactory
+import vcr
 from django.conf import settings
 from django.core.management import call_command
 from open_humans.models import OpenHumansMember
@@ -8,6 +9,7 @@ import os
 import tempfile
 import requests
 import requests_mock
+from main.celery import process_file
 
 
 class ParsingTestCase(TestCase):
@@ -82,3 +84,20 @@ class ParsingTestCase(TestCase):
             lines = cleaned_input.read()
             self.assertEqual(lines.find('John Doe'), -1)
             self.assertNotEqual(lines.find('data file generated'), -1)
+
+    @vcr.use_cassette('main/tests/fixtures/process_file.yaml',
+                      record_mode='none')
+    def test_process_file(self):
+        """
+        test process_file celery task
+        """
+
+        member = {"project_member_id": "1234"}
+        dfile = {'id': 34567,
+                 'basename': '23andme_valid.txt',
+                 'created': '2018-03-30T00:09:36.563486Z',
+                 'download_url': 'https://myawslink.com/member-files/direct-sharing-1337/1234/23andme_valid.txt?Signature=nope&Expires=1522390374&AWSAccessKeyId=nope',
+                 'metadata': {'tags': ['bar'], 'description': 'foo'},
+                 'source': 'direct-sharing-1337'}
+
+        process_file(dfile, 'myaccesstoken', member, dfile['metadata'])
