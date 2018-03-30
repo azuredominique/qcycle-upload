@@ -3,11 +3,7 @@ import vcr
 from django.conf import settings
 from django.core.management import call_command
 from open_humans.models import OpenHumansMember
-import os
-import tempfile
-import requests
 import requests_mock
-from main.celery import process_file
 
 
 class ManagementTestCase(TestCase):
