@@ -41,3 +41,18 @@ class ManagementTestCase(TestCase):
                                    'metadata': {'tags': ['bar'], 'description': 'foo'},
                                    'source': 'direct-sharing-1337'}]})
             call_command('process_files')
+
+    @vcr.use_cassette('main/tests/fixtures/import_test_file.yaml',
+                      record_mode='none')
+    def test_management_import_user(self):
+        self.assertEqual(len(OpenHumansMember.objects.all()),
+                         1)
+        call_command('import_users',
+                     infile='main/tests/fixtures/test_import.csv',
+                     delimiter=',')
+        old_oh_member = OpenHumansMember.objects.get(oh_id='1234')
+        self.assertEqual(old_oh_member.refresh_token,
+                         'bar')
+        new_oh_member = OpenHumansMember.objects.get(oh_id='2345')
+        self.assertEqual(new_oh_member.refresh_token,
+                         'new_refresh')
