@@ -1,0 +1,30 @@
+interactions:
+- request:
+    body: grant_type=refresh_token&refresh_token=REFRESHME
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Basic somekindofauth]
+      Connection: [keep-alive]
+      Content-Length: ['69']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [python-requests/2.18.4]
+    method: POST
+    uri: https://www.openhumans.org/oauth2/token/
+  response:
+    body: {string: '{"refresh_token": "new_refresh", "token_type":
+        "Bearer", "access_token": "new_access", "scope": "open-humans
+        pgp wildlife go-viral write read american-gut", "expires_in": 36000}'}
+    headers:
+      Cache-Control: [no-store]
+      Connection: [close]
+      Content-Language: [en]
+      Content-Type: [application/json]
+      Date: ['Mon, 02 Apr 2018 20:28:21 GMT']
+      Pragma: [no-cache]
+      Server: [Cowboy]
+      Vary: ['Accept-Language, Cookie']
+      Via: [1.1 vegur]
+      X-Frame-Options: [SAMEORIGIN]
+    status: {code: 200, message: OK}
+version: 1
