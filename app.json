@@ -1,7 +1,7 @@
 {
   "name": "Open Humans Data Uploader",
   "description": "A web app to support data uploads to an Open Humans project",
-  "repository": "https://github.com/OpenHumans/oh-23andme-source",
+  "repository": "https://github.com/OpenHumans/oh-vcf-source",
   "keywords": ["django"],
   "addons": [
     "heroku-redis:hobby-dev"
@@ -25,6 +25,6 @@
     "REDIS_URL": {
       "description": "Where your redis resides",
       "value": "redis://"
-    }    
+    }
   }
 }
