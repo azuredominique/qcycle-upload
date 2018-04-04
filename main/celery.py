@@ -5,7 +5,7 @@ import tempfile
 import json
 from ohapi import api
 import requests
-
+import io
 import bz2
 import logging
 import vcf
@@ -49,7 +49,7 @@ def verify_vcf(dfile):
         input_vcf = vcf.Reader(filename=input_file.name, compressed=True)
     elif base_name.endswith('.vcf.bz2'):
         input_file = create_tempfile(dfile, ".vcf.bz2")
-        vcf_file = bz2.BZ2File(input_file.name)
+        vcf_file = io.TextIOWrapper(bz2.BZ2File(input_file.name))
         input_vcf = vcf.Reader(vcf_file)
     elif base_name.endswith('.vcf'):
         input_file = create_tempfile(dfile, ".vcf")
@@ -75,7 +75,7 @@ def process_file(dfile, access_token, member, metadata):
             base_filename = base_filename[0:-3]
         elif base_filename.endswith('.bz2'):
             base_filename = base_filename[0:-4]
-        meta_filename = base_filename + 'metadata.json'
+        meta_filename = base_filename + '.metadata.json'
         raw_filename = temp_join(tmp_directory, meta_filename)
         metadata = {
                     'description':

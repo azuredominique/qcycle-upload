@@ -7,55 +7,106 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [python-requests/2.18.4]
     method: GET
-    uri: https://myawslink.com/member-files/direct-sharing-1337/1234/23andme_valid.txt.gz?Signature=nope&Expires=1522390374&AWSAccessKeyId=nope
+    uri: https://myawslink.com/member-files/direct-sharing-1337/1234/test.vcf.gz?Signature=nope&Expires=1522390374&AWSAccessKeyId=nope
   response:
     body:
       string: !!binary |
-        H4sICILMvVoAAzIzYW5kbWVfdmFsaWQudHh0AIWSUYvbMAzHn9NPISiMDbqkTdvcVjhGb+z21GOw
-        gz0OJ1ESDdvKbKe5fvvJvusY3MPy4kSRfvrrby3hcSAPrQoKOtIIPVp0KmAL9QXKrbLtCUGFg+RN
-        cFIOtmtYl4fd9lBuoFxvbhbLxRLuUPMMAlIQ8CnAGZ0ntsAdXHhyiZ/DPaFuJcchPB7v3nscVWol
-        gC+qGUCTRWjYOfQjW8kMLEBPthdh3x++5QD37ABjrnyuYEYYHZ+pRaDgQU4bqCN0QnyrLIiIFqRC
-        XskGdFZpSXq3StmaGxWSSAthQHDYoUPbIAyTkQpxgg2upLiN/wUZI+EyikaltXBJ2olRM4UBomZs
-        QpQcYaOePPjgYvEL/5n6t4vwPP6e4qvMJc8PTM5Mcd5XYpT3aGp9gXoi3cK2kpoHDihkFWSc6P3I
-        3lOtIzlF06W2PFvNqhWdMURd4opOMujBKCHiP+F2wjgC256jDDLRXzTyywuWxCy5TVWTpnCJicmJ
-        qy8+hxPLCGQ7dubZXFXzFOL8XmwblO2layMDSdeOJxtVHYQ8hDD6Q1HM85ynrTOYN2wK2Z7iOkLh
-        8ExxrXyRlu5VL7b/9+3a7KWXbWrKrTa5pSHv+VzIvL/kHn1h1HgmnOP506NyzZA3PX0K6ona24/V
-        unqTkLfbKomJq5Y1g2PDXtYmk8ugKCq7mrNwflNud9km+1Bu9rvseJSIBPYSudmX+6rKvn5e/AEF
-        EdYDkAMAAA==
+        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
+        slHrR7ILqSHKqqKrtTEiu5B2CTFUidSrsgup3hV1XVLq7dyFFNkidY1urSbSLqKaDDtVqVYTaRdQ
+        pUsk40SApF08VSKLiqrVRv/nfZarki6q9RX0y95IVP2Jre/mu701VTPqSG9GoihKot7ZWypptZEv
+        OCRtz4GCFmtDVLIYHIuByj7NIpM9i6QDCk6zEJFn0boNbJE5xVCIktKAReVYFOBCAx9ztsgaqU/q
+        gkXReRalHtlKFl4xDQh0koUYvBSd6LU5Xtoi8yyK0cQWLmHkLhpMAxY+Ll1VPG0+MQ6kGKSJlC7H
+        YuhNckxReBZDalBh8oEUQ25SlBJXlCIRm9SLwrOo9c2tZDmQoqkNckzknKwQeL2Bx0SexZCb2KId
+        sjQJJeFhjDSxReEyWZFlpYktvMdkVWpiC2++rBlN4sJDstqtn5hKFt4W1Whii8glTJfI9X25LDEu
+        kw0AfxO44FkkrXs6+TGDcs1C1JQmGSNxLsMkIDdBZanL82CAOO0BiXBOI7KukybNj7cHo6TRIJ4i
+        3zAx3DTp5IS3RyOkfmAtdRMPeLoNgBajM8+jSE0AjfA+QG+qH2LKPOB9wGbeBjElfB7oCFcT3bQD
+        HsloIkc94FGVJqVwwIPCbpA7hPeBbpAm7VZSDng0o0n98DHtYoA9bQ+GeZ4H43eTEU3iebSu2sSe
+        Ix6tCbjxed3VcU5pYM+BDzAONMEq3teYOZrUqcT5DYVB6k/ypRzOBzhyKW/4encVY7Lvky4vLv7y
+        L434C4/BcDi4bvJDt+fy1oMul+xq++zrfKq28Udue2GWRKHntNPY9xzGGHjQOUxpO82i2I/SNH9g
+        V73tZWIHNF17y+zcA0XCNucXq18StMMoPG+wvt8k3eLVNog2x9dKX24ejy/53zKQkQljuDJ0fDvb
+        JPmXY9dfpvd3rcn9rHXbb00Hw1ZvNG89fO2NWsUvMltMSqv43V9rVnwp+/mmq/5EWkTESNPqtOat
+        m5aqdHQFz4W3zfxnJCsKn10xqeb4fjw4c9nvVNjTp3a//zMhI1IsERTpp6vetSld9Ybspx3iVW+M
+        D/0J+0PZT5bY2nCW/y9eHX63UCyKV/mlORjyS+dil7sHUxeLB9EUrx5wutU7st66mV/2+pf9yeXN
+        w+Vk1CIX5FJsS5fSpXaJo5bWFluFdZJaWae+xzrF+Pus69ZbJ3PWyaSyTnuXdfLfZV33VOwU3jq9
+        sk5+j3Wy/ndZp52KHSms+y8b6b0XQC0AAA==
     headers:
       Accept-Ranges: [bytes]
-      Content-Length: ['912']
+      Content-Length: ['3499']
       Content-Type: [binary/octet-stream]
-      Date: ['Fri, 30 Mar 2018 00:12:54 GMT']
-      ETag: ['"b9a9ea396e07edfc834f281c19ae055b"']
-      Last-Modified: ['Fri, 30 Mar 2018 00:09:37 GMT']
+      Date: ['Wed, 04 Apr 2018 20:27:20 GMT']
+      ETag: ['"23aa45f08a7aefe094f7e9f41255c583"']
+      Last-Modified: ['Wed, 04 Apr 2018 20:26:33 GMT']
       Server: [AmazonS3]
       x-amz-id-2: [code]
       x-amz-request-id: [code]
       x-amz-version-id: [code]
     status: {code: 200, message: OK}
 - request:
-    body: project_member_id=1234&metadata=%7B%22description%22%3A+%2223andMe+full+genotyping+data%2C+original+format%22%2C+%22tags%22%3A+%5B%2223andMe%22%2C+%22genotyping%22%5D%2C+%22creation_date%22%3A+%222018-03-30+00%3A12%3A54%2B00%3A00%22%7D&filename=23andMe-genotyping.txt
+    body: project_member_id=1234&metadata=%7B%22description%22%3A+%22VCF+file+metadata%22%2C+%22tags%22%3A+%5B%22vcf%22%5D%7D&filename=test.vcf.metadata.json
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      Content-Length: ['271']
+      Content-Length: ['150']
       Content-Type: [application/x-www-form-urlencoded]
       User-Agent: [python-requests/2.18.4]
     method: POST
     uri: https://www.openhumans.org/api/direct-sharing/project/files/upload/direct/?access_token=myaccesstoken
   response:
-    body: {string: '{"id":12345,"url":"https://myawslink.com/member-files/direct-sharing-1337/1234/23andMe-genotyping.txt?Signature=nope%3D&Expires=1522390374&AWSAccessKeyId=nope"}'}
+    body: {string: '{"id":12345,"url":"https://myawslink.com/member-files/direct-sharing-1337/1234/test.vcf.metadata.json?Signature=nope%3D&Expires=1522390374&AWSAccessKeyId=nope"}'}
     headers:
       Allow: ['POST, OPTIONS']
-      Cache-Control: ['no-cache, max-age=0, must-revalidate, no-store']
+      Cache-Control: ['must-revalidate, no-cache, max-age=0, no-store']
       Connection: [close]
       Content-Language: [en]
       Content-Type: [application/json]
-      Date: ['Fri, 30 Mar 2018 00:12:53 GMT']
-      Expires: ['Fri, 30 Mar 2018 00:12:54 GMT']
-      Last-Modified: ['Fri, 30 Mar 2018 00:12:54 GMT']
+      Date: ['Wed, 04 Apr 2018 20:27:20 GMT']
+      Expires: ['Wed, 04 Apr 2018 20:27:20 GMT']
+      Last-Modified: ['Wed, 04 Apr 2018 20:27:20 GMT']
       Server: [Cowboy]
       Vary: ['Accept, Accept-Language, Cookie']
       Via: [1.1 vegur]
@@ -65,39 +116,79 @@ interactions:
     body: !!python/object/new:_io.BytesIO
       state: !!python/tuple
       - !!binary |
-        IyBUaGlzIGRhdGEgZmlsZSBnZW5lcmF0ZWQgYnkgMjNhbmRNZSBhdDogVGh1IE1hciAzMCAwMjo0
-        MzoyMSAyMDE3DQojCiMgQmVsb3cgaXMgYSB0ZXh0IHZlcnNpb24gb2YgeW91ciBkYXRhLiBGaWVs
-        ZHMgYXJlIFRBQi1zZXBhcmF0ZWQKIyBFYWNoIGxpbmUgY29ycmVzcG9uZHMgdG8gYSBzaW5nbGUg
-        U05QLiAgRm9yIGVhY2ggU05QLCB3ZSBwcm92aWRlIGl0cyBpZGVudGlmaWVyCiMgKGFuIHJzaWQg
-        b3IgYW4gaW50ZXJuYWwgaWQpLCBpdHMgbG9jYXRpb24gb24gdGhlIHJlZmVyZW5jZSBodW1hbiBn
-        ZW5vbWUsIGFuZCB0aGUKIyBnZW5vdHlwZSBjYWxsIG9yaWVudGVkIHdpdGggcmVzcGVjdCB0byB0
-        aGUgcGx1cyBzdHJhbmQgb24gdGhlIGh1bWFuIHJlZmVyZW5jZQojIHNlcXVlbmNlLiAgICAgV2Ug
-        YXJlIHVzaW5nIHJlZmVyZW5jZSBodW1hbiBhc3NlbWJseSBidWlsZCAzNi4gIE5vdGUgdGhhdCBp
-        dCBpcyBwb3NzaWJsZQojIHRoYXQgZGF0YSBkb3dubG9hZGVkIGF0IGRpZmZlcmVudCB0aW1lcyBt
-        YXkgYmUgZGlmZmVyZW50IGR1ZSB0byBvbmdvaW5nIGltcHJvdmVtZW50cwojIGluIG91ciBhYmls
-        aXR5IHRvIGNhbGwgZ2Vub3R5cGVzLiBNb3JlIGluZm9ybWF0aW9uIGFib3V0IHRoZXNlIGNoYW5n
-        ZXMgY2FuIGJlIGZvdW5kIGF0OgojIGh0dHBzOi8vd3d3LjIzYW5kbWUuY29tL3lvdS9kb3dubG9h
-        ZC9yZXZpc2lvbnMvCiMKIyBNb3JlIGluZm9ybWF0aW9uIG9uIHJlZmVyZW5jZSBodW1hbiBhc3Nl
-        bWJseSBidWlsZCAzNjoKIyBodHRwOi8vd3d3Lm5jYmkubmxtLm5paC5nb3YvcHJvamVjdHMvbWFw
-        dmlldy9tYXBfc2VhcmNoLmNnaT90YXhpZD05NjA2JmJ1aWxkPTM2CiMKIyByc2lkCWNocm9tb3Nv
-        bWUJcG9zaXRpb24JZ2Vub3R5cGUKcnMxMjM0CTEJODIxNTQJQUEKcnMyMzQ1CTEJNzUyNTY2CUdD
-        Cg==
+        eyJmaWxlZm9ybWF0IjogIlZDRnY0LjEiLCAiR0FUS0NvbW1hbmRMaW5lIjogW3siSUQiOiAiVW5p
+        ZmllZEdlbm90eXBlciIsICJWZXJzaW9uIjogIjIuNi00LWczZTVmZjYwIiwgIkRhdGUiOiAiXCJN
+        b24gU2VwIDE2IDA5OjUwOjMyIENFU1QgMjAxM1wiIiwgIkVwb2NoIjogIjEzNzkzMTc4MzI2Mzci
+        LCAiQ29tbWFuZExpbmVPcHRpb25zIjogIlwiYW5hbHlzaXNfdHlwZT1VbmlmaWVkR2Vub3R5cGVy
+        IGlucHV0X2ZpbGU9W3JtZHVwLmJhbV0gcmVhZF9idWZmZXJfc2l6ZT1udWxsIHBob25lX2hvbWU9
+        QVdTIGdhdGtfa2V5PW51bGwgdGFnPU5BIHJlYWRfZmlsdGVyPVtdIGludGVydmFscz1udWxsIGV4
+        Y2x1ZGVJbnRlcnZhbHM9bnVsbCBpbnRlcnZhbF9zZXRfcnVsZT1VTklPTiBpbnRlcnZhbF9tZXJn
+        aW5nPUFMTCBpbnRlcnZhbF9wYWRkaW5nPTAgcmVmZXJlbmNlX3NlcXVlbmNlPS9ob21lL3Bhcmto
+        b21jL3JlZmVyZW5jZS9oZzE5L2h1bWFuX2cxa192MzcuZmFzdGEgbm9uRGV0ZXJtaW5pc3RpY1Jh
+        bmRvbVNlZWQ9ZmFsc2UgZGlzYWJsZURpdGhlcmluZz1mYWxzZSBtYXhSdW50aW1lPS0xIG1heFJ1
+        bnRpbWVVbml0cz1NSU5VVEVTIGRvd25zYW1wbGluZ190eXBlPUJZX1NBTVBMRSBkb3duc2FtcGxl
+        X3RvX2ZyYWN0aW9uPW51bGwgZG93bnNhbXBsZV90b19jb3ZlcmFnZT0yNTAgYmFxPU9GRiBiYXFH
+        YXBPcGVuUGVuYWx0eT00MC4wIGZpeF9taXNlbmNvZGVkX3F1YWxpdHlfc2NvcmVzPWZhbHNlIGFs
+        bG93X3BvdGVudGlhbGx5X21pc2VuY29kZWRfcXVhbGl0eV9zY29yZXM9ZmFsc2UgdXNlT3JpZ2lu
+        YWxRdWFsaXRpZXM9ZmFsc2UgZGVmYXVsdEJhc2VRdWFsaXRpZXM9LTEgcGVyZm9ybWFuY2VMb2c9
+        bnVsbCBCUVNSPW51bGwgcXVhbnRpemVfcXVhbHM9MCBkaXNhYmxlX2luZGVsX3F1YWxzPWZhbHNl
+        IGVtaXRfb3JpZ2luYWxfcXVhbHM9ZmFsc2UgcHJlc2VydmVfcXNjb3Jlc19sZXNzX3RoYW49NiBn
+        bG9iYWxRU2NvcmVQcmlvcj0tMS4wIGFsbG93X2Jxc3Jfb25fcmVkdWNlZF9iYW1zX2Rlc3BpdGVf
+        cmVwZWF0ZWRfd2FybmluZ3M9ZmFsc2UgdmFsaWRhdGlvbl9zdHJpY3RuZXNzPVNJTEVOVCByZW1v
+        dmVfcHJvZ3JhbV9yZWNvcmRzPWZhbHNlIGtlZXBfcHJvZ3JhbV9yZWNvcmRzPWZhbHNlIHVuc2Fm
+        ZT1udWxsIGRpc2FibGVfYXV0b19pbmRleF9jcmVhdGlvbl9hbmRfbG9ja2luZ193aGVuX3JlYWRp
+        bmdfcm9kcz1mYWxzZSBudW1fdGhyZWFkcz0zMCBudW1fY3B1X3RocmVhZHNfcGVyX2RhdGFfdGhy
+        ZWFkPTEgbnVtX2lvX3RocmVhZHM9MCBtb25pdG9yVGhyZWFkRWZmaWNpZW5jeT1mYWxzZSBudW1f
+        YmFtX2ZpbGVfaGFuZGxlcz1udWxsIHJlYWRfZ3JvdXBfYmxhY2tfbGlzdD1udWxsIHBlZGlncmVl
+        PVtdIHBlZGlncmVlU3RyaW5nPVtdIHBlZGlncmVlVmFsaWRhdGlvblR5cGU9U1RSSUNUIGFsbG93
+        X2ludGVydmFsc193aXRoX3VuaW5kZXhlZF9iYW09ZmFsc2UgZ2VuZXJhdGVTaGFkb3dCQ0Y9ZmFs
+        c2UgbG9nZ2luZ19sZXZlbD1JTkZPIGxvZ190b19maWxlPW51bGwgaGVscD1mYWxzZSB2ZXJzaW9u
+        PWZhbHNlIGdlbm90eXBlX2xpa2VsaWhvb2RzX21vZGVsPUJPVEggcGNyX2Vycm9yX3JhdGU9MS4w
+        RS00IGNvbXB1dGVTTE9EPWZhbHNlIGFubm90YXRlTkRBPWZhbHNlIHBhaXJfaG1tX2ltcGxlbWVu
+        dGF0aW9uPUxPR0xFU1NfQ0FDSElORyBtaW5fYmFzZV9xdWFsaXR5X3Njb3JlPTE3IG1heF9kZWxl
+        dGlvbl9mcmFjdGlvbj0wLjA1IGFsbFNpdGVQTHM9ZmFsc2UgbWluX2luZGVsX2NvdW50X2Zvcl9n
+        ZW5vdHlwaW5nPTUgbWluX2luZGVsX2ZyYWN0aW9uX3Blcl9zYW1wbGU9MC4yNSBpbmRlbEdhcENv
+        bnRpbnVhdGlvblBlbmFsdHk9MTAgaW5kZWxHYXBPcGVuUGVuYWx0eT00NSBpbmRlbEhhcGxvdHlw
+        ZVNpemU9ODAgaW5kZWxEZWJ1Zz1mYWxzZSBpZ25vcmVTTlBBbGxlbGVzPWZhbHNlIGFsbFJlYWRz
+        U1A9ZmFsc2UgaWdub3JlTGFuZUluZm89ZmFsc2UgcmVmZXJlbmNlX3NhbXBsZV9jYWxscz0oUm9k
+        QmluZGluZyBuYW1lPSBzb3VyY2U9VU5CT1VORCkgcmVmZXJlbmNlX3NhbXBsZV9uYW1lPW51bGwg
+        c2FtcGxlX3Bsb2lkeT0yIG1pbl9xdWFsaXR5X3Njb3JlPTEgbWF4X3F1YWxpdHlfc2NvcmU9NDAg
+        c2l0ZV9xdWFsaXR5X3ByaW9yPTIwIG1pbl9wb3dlcl90aHJlc2hvbGRfZm9yX2NhbGxpbmc9MC45
+        NSBtaW5fcmVmZXJlbmNlX2RlcHRoPTEwMCBleGNsdWRlX2ZpbHRlcmVkX3JlZmVyZW5jZV9zaXRl
+        cz1mYWxzZSBoZXRlcm96eWdvc2l0eT0wLjAwMSBpbmRlbF9oZXRlcm96eWdvc2l0eT0xLjI1RS00
+        IGdlbm90eXBpbmdfbW9kZT1ESVNDT1ZFUlkgb3V0cHV0X21vZGU9RU1JVF9WQVJJQU5UU19PTkxZ
+        IHN0YW5kYXJkX21pbl9jb25maWRlbmNlX3RocmVzaG9sZF9mb3JfY2FsbGluZz0zMC4wIHN0YW5k
+        YXJkX21pbl9jb25maWRlbmNlX3RocmVzaG9sZF9mb3JfZW1pdHRpbmc9MzAuMCBhbGxlbGVzPShS
+        b2RCaW5kaW5nIG5hbWU9IHNvdXJjZT1VTkJPVU5EKSBtYXhfYWx0ZXJuYXRlX2FsbGVsZXM9NiBp
+        bnB1dF9wcmlvcj1bXSBjb250YW1pbmF0aW9uX2ZyYWN0aW9uX3RvX2ZpbHRlcj0wLjA1IGNvbnRh
+        bWluYXRpb25fZnJhY3Rpb25fcGVyX3NhbXBsZV9maWxlPW51bGwgcF9ub25yZWZfbW9kZWw9RVhB
+        Q1RfSU5ERVBFTkRFTlQgZXhhY3RjYWxsc2xvZz1udWxsIGRic25wPShSb2RCaW5kaW5nIG5hbWU9
+        IHNvdXJjZT1VTkJPVU5EKSBjb21wPVtdIG91dD1vcmcuYnJvYWRpbnN0aXR1dGUuc3RpbmcuZ2F0
+        ay5pby5zdHVicy5WYXJpYW50Q29udGV4dFdyaXRlclN0dWIgbm9fY21kbGluZV9pbl9oZWFkZXI9
+        b3JnLmJyb2FkaW5zdGl0dXRlLnN0aW5nLmdhdGsuaW8uc3R1YnMuVmFyaWFudENvbnRleHRXcml0
+        ZXJTdHViIHNpdGVzX29ubHk9b3JnLmJyb2FkaW5zdGl0dXRlLnN0aW5nLmdhdGsuaW8uc3R1YnMu
+        VmFyaWFudENvbnRleHRXcml0ZXJTdHViIGJjZj1vcmcuYnJvYWRpbnN0aXR1dGUuc3RpbmcuZ2F0
+        ay5pby5zdHVicy5WYXJpYW50Q29udGV4dFdyaXRlclN0dWIgZGVidWdfZmlsZT1udWxsIG1ldHJp
+        Y3NfZmlsZT1udWxsIGFubm90YXRpb249W10gZXhjbHVkZUFubm90YXRpb249W10gZmlsdGVyX3Jl
+        YWRzX3dpdGhfTl9jaWdhcj1mYWxzZSBmaWx0ZXJfbWlzbWF0Y2hpbmdfYmFzZV9hbmRfcXVhbHM9
+        ZmFsc2UgZmlsdGVyX2Jhc2VzX25vdF9zdG9yZWQ9ZmFsc2VcIiJ9XSwgInJlZmVyZW5jZSI6ICJm
+        aWxlOi8vL2hvbWUvcGFya2hvbWMvcmVmZXJlbmNlL2hnMTkvaHVtYW5fZzFrX3YzNy5mYXN0YSJ9
       - 0
       - null
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      Content-Length: ['913']
+      Content-Length: ['3249']
       User-Agent: [python-requests/2.18.4]
     method: PUT
-    uri: https://myawslink.com/member-files/direct-sharing-1337/1234/23andMe-genotyping.txt?Signature=nope%3D&Expires=1522390374&AWSAccessKeyId=nope
+    uri: https://myawslink.com/member-files/direct-sharing-1337/1234/test.vcf.metadata.json?Signature=nope%3D&Expires=1522390374&AWSAccessKeyId=nope
   response:
     body: {string: ''}
     headers:
       Content-Length: ['0']
-      Date: ['Fri, 30 Mar 2018 00:12:55 GMT']
-      ETag: ['"52920b2ce27a637fcb443bb0f15d6d27"']
+      Date: ['Wed, 04 Apr 2018 20:27:21 GMT']
+      ETag: ['"33a7b226d2499b7a0e6ffe63a88ca686"']
       Server: [AmazonS3]
       x-amz-id-2: [code]
       x-amz-request-id: [code]
@@ -115,128 +206,16 @@ interactions:
     method: POST
     uri: https://www.openhumans.org/api/direct-sharing/project/files/upload/complete/?access_token=myaccesstoken
   response:
-    body: {string: '{"size":913,"status":"ok"}'}
+    body: {string: '{"status":"ok","size":3249}'}
     headers:
       Allow: ['POST, OPTIONS']
-      Cache-Control: ['must-revalidate, max-age=0, no-cache, no-store']
+      Cache-Control: ['must-revalidate, no-cache, max-age=0, no-store']
       Connection: [close]
       Content-Language: [en]
       Content-Type: [application/json]
-      Date: ['Fri, 30 Mar 2018 00:12:54 GMT']
-      Expires: ['Fri, 30 Mar 2018 00:12:55 GMT']
-      Last-Modified: ['Fri, 30 Mar 2018 00:12:55 GMT']
-      Server: [Cowboy]
-      Vary: ['Accept, Accept-Language, Cookie']
-      Via: [1.1 vegur]
-      X-Frame-Options: [SAMEORIGIN]
-    status: {code: 200, message: OK}
-- request:
-    body: project_member_id=1234&metadata=%7B%22description%22%3A+%2223andMe+full+genotyping+data%2C+VCF+format%22%2C+%22tags%22%3A+%5B%2223andMe%22%2C+%22genotyping%22%2C+%22vcf%22%5D%2C+%22creation_date%22%3A+%222018-03-30+00%3A12%3A55%2B00%3A00%22%7D&filename=23andMe-genotyping.vcf.bz2
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['283']
-      Content-Type: [application/x-www-form-urlencoded]
-      User-Agent: [python-requests/2.18.4]
-    method: POST
-    uri: https://www.openhumans.org/api/direct-sharing/project/files/upload/direct/?access_token=myaccesstoken
-  response:
-    body: {string: '{"id":23456,"url":"https://myaws.com/member-files/direct-sharing-1337/1234/23andMe-genotyping.vcf.bz2?Signature=nope&Expires=1522390375&AWSAccessKeyId=nope"}'}
-    headers:
-      Allow: ['POST, OPTIONS']
-      Cache-Control: ['must-revalidate, max-age=0, no-cache, no-store']
-      Connection: [close]
-      Content-Language: [en]
-      Content-Type: [application/json]
-      Date: ['Fri, 30 Mar 2018 00:12:55 GMT']
-      Expires: ['Fri, 30 Mar 2018 00:12:55 GMT']
-      Last-Modified: ['Fri, 30 Mar 2018 00:12:55 GMT']
-      Server: [Cowboy]
-      Vary: ['Accept, Accept-Language, Cookie']
-      Via: [1.1 vegur]
-      X-Frame-Options: [SAMEORIGIN]
-    status: {code: 201, message: Created}
-- request:
-    body: !!python/object/new:_io.BytesIO
-      state: !!python/tuple
-      - !!binary |
-        QlpoOTFBWSZTWc1ktBcAABPfgAAwGAf/9y/n/xC/59+gMAEK1bEUxGgZEZGmTEyekaMgehDQMQap
-        k0001NigzKGjQGQAAA0aETJT9Sep5NNENGnqAAAAyADSDUwAUqGB2ORaZGgqtNNDc5YvrgJiQJ8i
-        IAUhUC07NkQKOIXy9qosg9VXfPSRQp0yieB0RxG0GQJTpxJjiS8Uw+lbqSCyrtKnGMMCfoYZ5RDk
-        EFTS1w89AME7ostF5GbtUwdu0i4mkkizIlPTmW4I+MQWGmcaoBCitcFQrCgXThDORAUPU9i5tZ77
-        stuM2ILRQETWY1I7kurGxfeNW08O8FytnAjxSR5M4YwEZqAa/gKRmgFA37TGAUR0kd5YMeYqqG1D
-        0yJSMrzc6Vt51vCFzJChaa59EyKARbQyCEiC2GSPQ1lclVbJ1skfNvNUwMQJ/i7kinChIZrJaC4=
-      - 0
-      - null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['341']
-      User-Agent: [python-requests/2.18.4]
-    method: PUT
-    uri: https://myaws.com/member-files/direct-sharing-1337/1234/23andMe-genotyping.vcf.bz2?Signature=nope&Expires=1522390375&AWSAccessKeyId=nope
-  response:
-    body: {string: ''}
-    headers:
-      Content-Length: ['0']
-      Date: ['Fri, 30 Mar 2018 00:12:56 GMT']
-      ETag: ['"be71f4a2a40c3bb1b7fd10ae5cd03ed4"']
-      Server: [AmazonS3]
-      x-amz-id-2: [code]
-      x-amz-request-id: [code]
-      x-amz-version-id: [code]
-    status: {code: 200, message: OK}
-- request:
-    body: project_member_id=1234&file_id=36691
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['40']
-      Content-Type: [application/x-www-form-urlencoded]
-      User-Agent: [python-requests/2.18.4]
-    method: POST
-    uri: https://www.openhumans.org/api/direct-sharing/project/files/upload/complete/?access_token=myaccesstoken
-  response:
-    body: {string: '{"size":341,"status":"ok"}'}
-    headers:
-      Allow: ['POST, OPTIONS']
-      Cache-Control: ['must-revalidate, max-age=0, no-cache, no-store']
-      Connection: [close]
-      Content-Language: [en]
-      Content-Type: [application/json]
-      Date: ['Fri, 30 Mar 2018 00:12:56 GMT']
-      Expires: ['Fri, 30 Mar 2018 00:12:56 GMT']
-      Last-Modified: ['Fri, 30 Mar 2018 00:12:56 GMT']
-      Server: [Cowboy]
-      Vary: ['Accept, Accept-Language, Cookie']
-      Via: [1.1 vegur]
-      X-Frame-Options: [SAMEORIGIN]
-    status: {code: 200, message: OK}
-- request:
-    body: project_member_id=1234&file_id=23456
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['40']
-      Content-Type: [application/x-www-form-urlencoded]
-      User-Agent: [python-requests/2.18.4]
-    method: POST
-    uri: https://www.openhumans.org/api/direct-sharing/project/files/delete/?access_token=myaccesstoken
-  response:
-    body: {string: '{"ids":[34567]}'}
-    headers:
-      Allow: ['POST, OPTIONS']
-      Cache-Control: ['no-cache, max-age=0, must-revalidate, no-store']
-      Connection: [close]
-      Content-Language: [en]
-      Content-Type: [application/json]
-      Date: ['Fri, 30 Mar 2018 00:12:55 GMT']
-      Expires: ['Fri, 30 Mar 2018 00:12:56 GMT']
-      Last-Modified: ['Fri, 30 Mar 2018 00:12:56 GMT']
+      Date: ['Wed, 04 Apr 2018 20:27:20 GMT']
+      Expires: ['Wed, 04 Apr 2018 20:27:21 GMT']
+      Last-Modified: ['Wed, 04 Apr 2018 20:27:21 GMT']
       Server: [Cowboy]
       Vary: ['Accept, Accept-Language, Cookie']
       Via: [1.1 vegur]
