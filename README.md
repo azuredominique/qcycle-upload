@@ -1,7 +1,6 @@
-[![Build Status](https://travis-ci.org/OpenHumans/oh-23andme-source.svg?branch=master)](https://travis-ci.org/OpenHumans/oh-23andme-source)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/a21c2545bf9356bf1277/test_coverage)](https://codeclimate.com/github/OpenHumans/oh-23andme-source/test_coverage)
-[![Maintainability](https://api.codeclimate.com/v1/badges/a21c2545bf9356bf1277/maintainability)](https://codeclimate.com/github/OpenHumans/oh-23andme-source/maintainability)
-
+[![Build Status](https://travis-ci.org/OpenHumans/oh-vcf-source.svg?branch=master)](https://travis-ci.org/OpenHumans/oh-vcf-source)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/fa1655d27aee549f69f6/test_coverage)](https://codeclimate.com/github/OpenHumans/oh-vcf-source/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/fa1655d27aee549f69f6/maintainability)](https://codeclimate.com/github/OpenHumans/oh-vcf-source/maintainability)
 
 # The *VCF* upload project for *Open Humans*
 
