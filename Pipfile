@@ -31,6 +31,7 @@ requests-mock = "*"
 celery = "*"
 redis = "*"
 open-humans-api = "*"
+pyvcf = "*"
 
 
 [requires]

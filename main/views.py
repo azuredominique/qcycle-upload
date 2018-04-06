@@ -98,6 +98,8 @@ def upload_file_to_oh(oh_member, filehandle, metadata):
     if req3.status_code != 200:
         raise raise_http_error(complete_url, req2,
                                'Bad response when completing upload.')
+    clean_uploaded_file.delay(oh_member.get_access_token(**client_info),
+                              int(req1.json()['id']))
 
 
 def iterate_files_upload(request):
@@ -106,10 +108,14 @@ def iterate_files_upload(request):
     """
     files = FileMetaData.objects.all()
     for file in files:
+        vcf_source = request.POST.get('file_source_{}'.format(file.id))
+        user_notes = request.POST.get('file_desc_{}'.format(file.id))
         uploaded_file = request.FILES.get('file_{}'.format(file.id))
         if uploaded_file is not None:
             metadata = {'tags': json.loads(file.tags),
-                        'description': file.description}
+                        'description': file.description,
+                        'user_notes': user_notes,
+                        'vcf_source': vcf_source}
             upload_file_to_oh(
                 request.user.openhumansmember,
                 uploaded_file,

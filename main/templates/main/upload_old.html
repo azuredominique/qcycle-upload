@@ -1,13 +1,9 @@
 {% extends 'main/application.html' %}
 
 {% block content %}
+{% load utilities %}
 
 <div class="row">
-  <div class="col-md-6">
-    {% load utilities %}
-    {{upload_description|markdown}}
-  </div>
-  <div class="col-md-6">
     <h2>Upload your data</h2>
 
     <form method="post" enctype="multipart/form-data" action="{% url 'complete' %}">
@@ -17,7 +13,9 @@
           <tr>
             <th>Name</th>
             <th>Description</th>
-            <th>Tags</th>
+            <th>Source</th>
+            <th>Optional Comments</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -25,7 +23,24 @@
           <tr>
             <td>{{ file.name }}</td>
             <td>{{ file.description }}</td>
-            <td>{{ file.tags }}</td>
+            <td>
+              <select name="{% concatenate "file_source" file.id %}"
+                     id="{% concatenate "file_source" file.id %}">
+                <option value="other">Other</option>
+                <option value="dna_land">DNALand Imputation</option>
+                <option value="full_genomes_corp">Full Genomes Corp.</option>
+                <option value="genes_for_good">Genes for Good</option>
+                <option value="genos_exome">Genos</option>
+                <option value="illumina_uyg">Illumina UYG</option>
+                <option value="twenty_three_and_me">23andMe Exome</option>
+                <option value="veritas_genetics">Veritas Genetics</option>
+              </select>
+            </td>
+            <td><input type="text" class="form-control"
+              name="{% concatenate "file_desc" file.id %}"
+              id="{% concatenate "file_desc" file.id %}"
+              placeholder="Optional Description"></td>
+
             <td>
                 <input type="file" name="{% concatenate "file" file.id %}"
                        id="{% concatenate "file" file.id %}">
@@ -42,7 +57,10 @@
       will time out. In these cases <a href="{% url "index"%}">the use of the Javascript uploader</a> is preferred
       as it does not have this limitation.
     </p>
-  </div>
 </div>
+<div class="row">
+    {{upload_description|markdown}}
+</div>
+
 
 {% endblock %}

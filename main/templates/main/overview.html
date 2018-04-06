@@ -1,17 +1,15 @@
 {% extends 'main/application.html' %}
 
 {% block content %}
-
+{% load utilities %}
       <h1>Manage your {{config.project_title}} data.</h1>
       <p class="lead">
         Thank you! We logged you in through <i>Open Humans</i>.
       </p>
       <div class="row">
-        <div class="col-md-6">
-          {% load utilities %}
           {{overview|markdown}}
-        </div>
-        <div class="col-md-6">
+      </div>
+      <div class="row">
           <div class="panel panel-default">
             <div class="panel-body">
               {% include 'main/partials/upload_form.html' %}
@@ -22,7 +20,6 @@
             visit <a href="{{ oh_proj_page }}">this project's page on Open Humans </a>
             to see any data you've previously uploaded.
           </p>
-        </div>
       </div>
 
 {% endblock %}
