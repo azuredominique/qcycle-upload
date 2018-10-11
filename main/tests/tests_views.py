@@ -138,25 +138,6 @@ class LoginTestCase(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, "/")
 
-    @vcr.use_cassette('main/tests/fixtures/delete_single.yaml',
-                      record_mode='none')
-    def test_delete_single(self):
-        data = {"access_token": 'foo',
-                "refresh_token": 'bar',
-                "expires_in": 36000}
-        self.oh_member = OpenHumansMember.create(oh_id='1234567890abcdef',
-                                                 data=data)
-        self.oh_member.save()
-        self.user = self.oh_member.user
-        self.user.set_password('foobar')
-        self.user.save()
-        c = Client()
-        c.login(username=self.user.username, password='foobar')
-
-        response = c.get("/delete/1337", follow=True)
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'main/list.html')
-
 
 class UploadTestCase(TestCase):
     def setUp(self):
