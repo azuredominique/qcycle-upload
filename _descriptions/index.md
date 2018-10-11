@@ -1,1 +1,3 @@
-Welcome to the *Genome/Exome* integration project for [*Open Humans*](https://www.openhumans.org). To get started just log in with your *Open Humans* account to the right and you will find a step-by-step guide on how to upload your genetic data.
+Welcome to the *QCycle* project.
+
+To upload further data, just log in with your *Open Humans* account you will find a step-by-step guide on how to provide the additional data sets.

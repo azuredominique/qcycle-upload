@@ -18,11 +18,9 @@ function startUpload() {
   $("#infotext").replaceWith('<div id="upload_form">' + replacement + '</div>');
   file_metadata.forEach(function (file) {
     var data = file.fields;
-    var dsource = document.getElementById('file_source_'+file.pk).value;
     var user_notes = document.getElementById('file_desc_'+file.pk).value;
     var metadata = {'tags': JSON.parse(data.tags),
                     'description': data.description,
-                    'vcf_source': dsource,
                     'user_notes': user_notes};
     uploadFile(file.pk, JSON.stringify(metadata));
   });

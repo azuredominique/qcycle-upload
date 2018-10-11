@@ -13,7 +13,6 @@
           <tr>
             <th>Name</th>
             <th>Description</th>
-            <th>Source</th>
             <th>Optional Comments</th>
             <th></th>
           </tr>
@@ -23,19 +22,6 @@
           <tr>
             <td>{{ file.name }}</td>
             <td>{{ file.description }}</td>
-            <td>
-              <select name="{% concatenate "file_source" file.id %}"
-                     id="{% concatenate "file_source" file.id %}">
-                <option value="other">Other</option>
-                <option value="dna_land">DNALand Imputation</option>
-                <option value="full_genomes_corp">Full Genomes Corp.</option>
-                <option value="genes_for_good">Genes for Good</option>
-                <option value="genos_exome">Genos</option>
-                <option value="illumina_uyg">Illumina UYG</option>
-                <option value="twenty_three_and_me">23andMe Exome</option>
-                <option value="veritas_genetics">Veritas Genetics</option>
-              </select>
-            </td>
             <td><input type="text" class="form-control"
               name="{% concatenate "file_desc" file.id %}"
               id="{% concatenate "file_desc" file.id %}"
