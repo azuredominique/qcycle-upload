@@ -261,6 +261,10 @@ def list_files(request):
         data = ohapi.api.exchange_oauth2_member(
             oh_member.get_access_token(),
             base_url=OH_BASE_URL)
+        files = []
+        for f in data['data']:
+            if f['source'] == 'direct-sharing-'+settings.PROJECT_ID:
+                files.append(f)
         context = {'files': data['data']}
         return render(request, 'main/list.html',
                       context=context)
