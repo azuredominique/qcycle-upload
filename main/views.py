@@ -265,7 +265,7 @@ def list_files(request):
         for f in data['data']:
             if f['source'] == 'direct-sharing-'+settings.PROJECT_ID:
                 files.append(f)
-        context = {'files': data['data']}
+        context = {'files': files}
         return render(request, 'main/list.html',
                       context=context)
     return redirect('index')
