@@ -209,6 +209,7 @@ class LoginTestCase(TestCase):
                            json={'data': [
                             {'id': '1',
                              'basename': 'foo',
+                             'source': 'direct-sharing-178',
                              'download_url': 'www.foobar.com',
                              'metadata': {
                                           'description': '',
