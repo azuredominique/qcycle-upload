@@ -2,12 +2,22 @@
 
 {% block content %}
 {% load utilities %}
-
-<div class="row">
-    <h2>Upload your data</h2>
-
-    <form method="post" enctype="multipart/form-data" action="{% url 'complete' %}">
-      {% csrf_token %}
+<script>
+  var file_metadata = {{ files_js | safe }};
+  var access_token = "{{ oh_member.access_token }}";
+  var member_id = {{ oh_member.oh_id }};
+  var csrf_token = "{{ csrf_token }}";
+  var oh_direct_upload_url = "{{ oh_direct_upload_url }}";
+  var oh_direct_upload_complete_url = "{{ oh_direct_upload_complete_url }}";
+</script>
+{% load static %}
+{% csrf_token %}
+<div id='upload_form'>
+  <form method="get" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div>
+      <h3>Upload your data </h3>
+      <div class="table-responsive">
       <table class="table">
         <thead>
           <tr>
@@ -26,7 +36,6 @@
               name="{% concatenate "file_desc" file.id %}"
               id="{% concatenate "file_desc" file.id %}"
               placeholder="Optional Description"></td>
-
             <td>
                 <input type="file" name="{% concatenate "file" file.id %}"
                        id="{% concatenate "file" file.id %}">
@@ -35,18 +44,19 @@
         {% endfor %}
         </tbody>
       </table>
-      <input class="btn btn-primary" type="submit" value="Upload your data">
-    </form>
-    <p class="lead">
-      A word of warning: <strong>This uploader does not work well for large files.</strong>
-      If an upload takes longer than 30 seconds to finish the website
-      will time out. In these cases <a href="{% url "index"%}">the use of the Javascript uploader</a> is preferred
-      as it does not have this limitation.
-    </p>
+      </div>
+    </div>
+    <input type="button" class="btn btn-primary" value="Upload your data" onClick="startUpload()">
+  </form>
+  <p id="infotext">
+    <small>
+      The Javascript uploader has failed for some users in the past. You could try another browser
+      or <a href="{% url 'index' %}">use the simpler upload form</a> if you prefer that.
+    </small>
+  </p>
 </div>
 <div class="row">
     {{upload_description|markdown}}
 </div>
-
-
+<script src="{% static 'upload.js' %}"></script>
 {% endblock %}

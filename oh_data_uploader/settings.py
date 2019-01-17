@@ -19,7 +19,7 @@ apply_env()
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-PROJECT_ID = os.getenv('PROJECT_ID', '178')
+PROJECT_ID = os.getenv('PROJECT_ID', '73')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/

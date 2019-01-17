@@ -183,6 +183,7 @@ def overview(request):
                    'access_token': oh_member.get_access_token(**client_info),
                    'oh_direct_upload_url': OH_DIRECT_UPLOAD,
                    'oh_direct_upload_complete_url': OH_DIRECT_UPLOAD_COMPLETE,
+                   'upload_description': proj_config.upload_description,
                    "overview": "".join(proj_config.overview)}
         return render(request, 'main/overview.html', context=context)
     return redirect('index')
