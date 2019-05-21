@@ -2,7 +2,7 @@ import ohapi
 from django.conf import settings
 from open_humans.models import OpenHumansMember
 import logging
-from project_admin.models import ProjectConfiguration
+from project_admin.models import ConsentRecord, ProjectConfiguration
 
 logger = logging.getLogger(__name__)
 OH_OAUTH2_REDIRECT_URI = '{}/complete'.format(settings.OPENHUMANS_APP_BASE_URL)
@@ -28,6 +28,8 @@ def get_create_member(data):
         oh_member = OpenHumansMember.create(
             oh_id=oh_id,
             data=data)
+        consent = ConsentRecord(project_member_id=oh_id)
+        consent.save()
         logger.debug('Member {} created.'.format(oh_id))
     oh_member.save()
     return oh_member

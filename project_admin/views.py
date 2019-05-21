@@ -2,7 +2,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model, login
 from django.shortcuts import redirect, render
 
-from .models import ProjectConfiguration, FileMetaData
+from .models import ConsentRecord, ProjectConfiguration, FileMetaData
 import json
 
 User = get_user_model()
@@ -19,6 +19,17 @@ def home(request):
             file.tags = file.get_tags()
         context = {'project_config': project_config, 'files': files}
         return render(request, 'project_admin/home.html', context=context)
+    return redirect('project-admin:login')
+
+
+def consent_records(request):
+    """
+    Barebones consent record display.
+    """
+    if request.user.username == 'admin':
+        consents = ConsentRecord.objects.all()
+        context = {'consents': consents}
+        return render(request, 'project_admin/consent-records.html', context=context)
     return redirect('project-admin:login')
 
 

@@ -66,3 +66,11 @@ class FileMetaData(models.Model):
 
     def get_tags(self):
         return ','.join(json.loads(self.tags)) if self.tags else ''
+
+
+class ConsentRecord(models.Model):
+    """
+    Store record of consent.
+    """
+    date = models.DateTimeField(auto_now_add=True)
+    project_member_id = models.CharField(max_length=20)

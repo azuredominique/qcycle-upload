@@ -6,6 +6,8 @@ app_name = 'project-admin'
 
 urlpatterns = [
     url(r'^$', views.home, name='home'),
+    url(r'^consent-records/?$',
+        views.consent_records, name='consent-records'),
     url(r'^config-general-settings/?$',
         views.config_general_settings, name='config-general-settings'),
     url(r'^config-oh-settings/?$',

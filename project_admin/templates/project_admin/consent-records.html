@@ -1,0 +1,23 @@
+{% extends 'main/application.html' %}
+
+{% block content %}
+{% load utilities %}
+
+<h1>Consent records</h1>
+
+<table class="table">
+  <tbody>
+    <tr>
+      <th>Open Humans Project Member ID</th>
+      <th>Date</th>
+    </tr>
+    {% for consent in consents %}
+    <tr>
+      <td>{{ consent.project_member_id }}</td>
+      <td>{{ consent.date }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
